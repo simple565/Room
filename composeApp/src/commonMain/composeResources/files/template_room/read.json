@@ -1,0 +1,102 @@
+{
+  "fields": [
+    {
+      "name": "名称",
+      "type": "Text",
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "状态",
+      "type": "Select",
+      "required": true,
+      "options": [
+        {
+          "name": "未读"
+        },
+        {
+          "name": "在读"
+        },
+        {
+          "name": "已读"
+        },
+        {
+          "name": "废弃"
+        }
+      ],
+      "defaultValue": "未读"
+    },
+    {
+      "name": "进度",
+      "type": "Number",
+      "required": false,
+      "unit": "页",
+      "format": "Number",
+      "progressBarStyle": "None",
+      "minValue": 0,
+      "maxValue": 99
+    },
+    {
+      "name": "作者",
+      "type": "Text",
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "类型",
+      "type": "Select",
+      "required": false,
+      "options": [
+        {
+          "name": "出版书籍"
+        },
+        {
+          "name": "有声读物"
+        },
+        {
+          "name": "期刊杂志"
+        },
+        {
+          "name": "网络文学"
+        },
+        {
+          "name": "漫画"
+        }
+      ]
+    },
+    {
+      "name": "标签",
+      "type": "MultiSelect",
+      "required": false,
+      "options": [
+        {
+          "name": "推理"
+        },
+        {
+          "name": "历史"
+        },
+        {
+          "name": "科技"
+        },
+        {
+          "name": "科幻"
+        },
+        {
+          "name": "传记"
+        }
+      ]
+    },
+    {
+      "name": "想法",
+      "type": "Text",
+      "required": true,
+      "defaultValue": ""
+    }
+  ],
+  "name": "阅读",
+  "listColumnCount": 3,
+  "supportQuickCreate": true,
+  "supportCreateList": true,
+  "showCalendarView": true,
+  "supportAddBySearch": false
+}

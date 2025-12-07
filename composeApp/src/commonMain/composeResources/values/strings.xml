@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">Room</string>
+
+    <string name="nav_home">首页</string>
+    <string name="nav_settings">设置</string>
+
+
+    <string name="room_last_update_format">最近：%1$s</string>
+    <string name="record_item_count_format">%1$d条</string>
+
+</resources>
