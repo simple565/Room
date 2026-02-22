@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">Room</string>
+
+    <string name="cancel">取消</string>
+    <string name="done">完成</string>
+    <string name="new">新建</string>
+    <string name="save">保存</string>
+    <string name="required_mark">*</string>
+
+    <string name="nav_home">首页</string>
+    <string name="nav_settings">设置</string>
+
+    <string name="room_last_update_format">最近：%1$s</string>
+    <string name="record_item_count_format">%1$d条</string>
+
+
+    <string name="room_config_add">新建房间</string>
+    <string name="room_config_edit">编辑房间</string>
+    <string name="room_config_name">房间名称</string>
+    <string name="room_config_title_basic">基本</string>
+    <string name="room_config_support_quick_add">支持快速记录</string>
+    <string name="room_config_support_create_list">支持快速记录</string>
+    <string name="room_config_show_calendar">展示日历</string>
+    <string name="room_config_title_attribute">属性</string>
+
+</resources>
