@@ -1,5 +1,6 @@
 package com.elife.room.feature.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,11 +19,9 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.elife.room.core.ext.defaultId
 import com.elife.room.core.ext.isCompact
@@ -73,6 +72,8 @@ fun EditRoomConfigDialog(
                 item {
                     Title(
                         isNewRoom = roomId.isDefaultId,
+                        onCancelClick = onDismissRequest,
+                        onConfirmClick = {},
                         modifier = Modifier.fillMaxWidth().wrapContentHeight()
                             .padding(vertical = 12.dp)
                     )
@@ -94,7 +95,12 @@ fun EditRoomConfigDialog(
 }
 
 @Composable
-private fun Title(isNewRoom: Boolean, modifier: Modifier = Modifier) {
+private fun Title(
+    isNewRoom: Boolean,
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+     modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -102,6 +108,7 @@ private fun Title(isNewRoom: Boolean, modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(Res.string.cancel),
+            modifier = Modifier.clickable { onCancelClick() },
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
@@ -110,6 +117,7 @@ private fun Title(isNewRoom: Boolean, modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(if (isNewRoom) Res.string.new else Res.string.done),
+            modifier = Modifier.clickable { onConfirmClick() },
             style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary)
         )
     }

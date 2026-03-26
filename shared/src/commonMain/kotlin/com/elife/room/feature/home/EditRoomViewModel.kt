@@ -3,21 +3,17 @@ package com.elife.room.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elife.room.core.ext.defaultId
-import com.elife.room.database.Room
-import com.elife.room.database.RoomDao
-import com.elife.room.entity.RoomInfo
+import com.elife.room.database.dao.RoomDao
+import com.elife.room.database.table.Room
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.random.Random
+import kotlin.time.Clock
 
 /**
  * @author lianml
@@ -57,13 +53,14 @@ class EditRoomViewModel : ViewModel(), KoinComponent {
     fun addRoom() = viewModelScope.launch(Dispatchers.IO) {
         val room = Room(
             id = Int.defaultId,
+            groupId = Int.defaultId,
             name = "Room ${Random.nextInt(10)}",
             icon = "",
             listColumnCount = 3,
             supportCreateList = false,
             supportQuickAdd = false,
             showCalendarView = false,
-            updateTime = 0L,
+            updateTime = Clock.System.now().toEpochMilliseconds(),
         )
         roomDao.insert(room)
     }

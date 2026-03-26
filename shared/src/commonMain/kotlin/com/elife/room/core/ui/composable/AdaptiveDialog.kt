@@ -25,6 +25,7 @@ import com.elife.room.core.ext.isCompact
 fun AdaptiveDialog(
     onDismissRequest: () -> Unit,
     content: @Composable () -> Unit = {},
+    usePlatformDefaultWidth: Boolean = false,
     dismissOnBackPress: Boolean = true,
     dismissOnClickOutside: Boolean = true,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
@@ -51,7 +52,7 @@ fun AdaptiveDialog(
         Dialog(
             onDismissRequest = onDismissRequest,
             properties = DialogProperties(
-                usePlatformDefaultWidth = false,
+                usePlatformDefaultWidth = usePlatformDefaultWidth,
                 dismissOnBackPress = dismissOnBackPress,
                 dismissOnClickOutside = dismissOnBackPress
             )

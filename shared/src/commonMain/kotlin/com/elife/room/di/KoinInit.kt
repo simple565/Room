@@ -1,7 +1,8 @@
 package com.elife.room.di
 
 import com.elife.room.database.AppDatabase
-import com.elife.room.database.RoomDao
+import com.elife.room.database.dao.RoomDao
+import com.elife.room.database.dao.RoomGroupDao
 import com.elife.room.feature.home.HomeViewModel
 import com.elife.room.repository.RoomRepository
 import org.koin.core.context.startKoin
@@ -21,7 +22,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
 
 fun commonModule() = module {
     single<RoomDao> { get<AppDatabase>().roomDao() }
-    factory<RoomRepository> { RoomRepository(roomDao = get()) }
+    single<RoomGroupDao> { get<AppDatabase>().roomGroupDao() }
+    factory<RoomRepository> { RoomRepository() }
     viewModel { HomeViewModel(repository = get()) }
 }
 

@@ -1,7 +1,6 @@
 package com.elife.room.core.ui.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,12 +49,12 @@ fun CustomBottomAppBar(
     modifier: Modifier = Modifier,
     showLabels: Boolean = true,
     scrollBehavior: BottomAppBarScrollBehavior? = null,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    selectedColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
-    unselectedColor: Color = MaterialTheme.colorScheme.surface
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.3F),
+    selectedColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    unselectedColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.3F)
 ) {
     BottomAppBar(
-        modifier = Modifier,
+        modifier = modifier,
         containerColor = Color.Transparent,
         scrollBehavior = scrollBehavior
     ) {
@@ -66,11 +65,6 @@ fun CustomBottomAppBar(
         ) {
             Row(
                 modifier = modifier
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1F),
-                        shape = MaterialTheme.shapes.extraLarge
-                    )
                     .background(backgroundColor, shape = MaterialTheme.shapes.extraLarge)
                     .padding(4.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -94,7 +88,6 @@ fun CustomBottomAppBar(
                             ).padding(horizontal = 16.dp),
                         showLabel = showLabels,
                         contentColor = if (index == selectedIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-
                     )
                 }
             }
@@ -141,7 +134,7 @@ private fun CustomBottomAppBarItem(
 @Composable
 private fun CustomBottomAppBarPreview() {
     AppTheme {
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             CustomBottomAppBar(
                 items = listOf(
                     NavigationItem(label = "Home", icon = Icons.Rounded.Home),

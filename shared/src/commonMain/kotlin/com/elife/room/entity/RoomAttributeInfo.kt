@@ -5,85 +5,93 @@ package com.elife.room.entity
  * @author lianml
  * @date 2025/11/27
  */
-interface RoomAttribute {
+interface RoomAttributeInfo {
     val type: RoomAttributeType
     val id: Int
     val name: String
     val description: String
     val required: Boolean
     val defaultValue: String
+    val sortOrder: Int
 }
 
-data class TextRoomAttribute(
+data class TextRoomAttributeInfo(
     override val type: RoomAttributeType = RoomAttributeType.TEXT,
     override val id: Int,
     override val name: String,
     override val description: String,
     override val required: Boolean,
-    override val defaultValue: String
-) : RoomAttribute
+    override val defaultValue: String,
+    override val sortOrder: Int
+) : RoomAttributeInfo
 
-data class ImageRoomAttribute(
+data class ImageRoomAttributeInfo(
     override val type: RoomAttributeType = RoomAttributeType.IMAGE,
     override val id: Int,
     override val name: String,
     override val description: String,
     override val required: Boolean,
-    override val defaultValue: String
-) : RoomAttribute
+    override val defaultValue: String,
+    override val sortOrder: Int
+) : RoomAttributeInfo
 
-data class NumberRoomAttribute(
+data class NumberRoomAttributeInfo(
     override val type: RoomAttributeType = RoomAttributeType.NUMBER,
     override val id: Int,
     override val name: String,
     override val description: String,
     override val required: Boolean,
     override val defaultValue: String,
+    override val sortOrder: Int,
     val unit: String = "",
     val minValue: Float = 0F,
     val maxValue: Float = 100F,
     val format: NumberFormat = NumberFormat.NUMBER,
     val decimalPlaces: Int = 0,
     val progressBarStyle: ProgressBarStyle = ProgressBarStyle.NONE
-) : RoomAttribute
+) : RoomAttributeInfo
 
-data class SwitchRoomAttribute(
+data class SwitchRoomAttributeInfo(
     override val type: RoomAttributeType = RoomAttributeType.SWITCH,
     override val id: Int,
     override val name: String,
     override val description: String,
     override val required: Boolean,
-    override val defaultValue: String
-) : RoomAttribute
+    override val defaultValue: String,
+    override val sortOrder: Int
+) : RoomAttributeInfo
 
-data class SelectRoomAttribute(
+data class SelectRoomAttributeInfo(
     override val type: RoomAttributeType = RoomAttributeType.SELECT,
     override val id: Int,
     override val name: String,
     override val description: String,
     override val required: Boolean,
     override val defaultValue: String,
+    override val sortOrder: Int,
     val options: List<String> = emptyList()
-) : RoomAttribute
+) : RoomAttributeInfo
 
-data class MultiSelectRoomAttribute(
+data class MultiSelectRoomAttributeInfo(
     override val type: RoomAttributeType = RoomAttributeType.MULTI_SELECT,
     override val id: Int,
     override val name: String,
     override val description: String,
     override val required: Boolean,
     override val defaultValue: String,
+    override val sortOrder: Int,
     val options: List<String> = emptyList()
-) : RoomAttribute
+) : RoomAttributeInfo
 
-data class DatetimeRoomAttribute(
+data class DatetimeRoomAttributeInfo(
     override val type: RoomAttributeType = RoomAttributeType.DATETIME,
     override val id: Int,
     override val name: String,
     override val description: String,
     override val required: Boolean,
     override val defaultValue: String,
+    override val sortOrder: Int,
     val datetime: String,
     val dateFormate: String = DatetimeFormat.FULL.format,
     val use24HourFormate: Boolean = false
-) : RoomAttribute
+) : RoomAttributeInfo

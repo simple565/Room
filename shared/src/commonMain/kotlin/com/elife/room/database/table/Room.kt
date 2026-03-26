@@ -1,4 +1,4 @@
-package com.elife.room.database
+package com.elife.room.database.table
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Room(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
+    val groupId: Int,
     val name: String,
     val icon: String,
     val listColumnCount: Int,
@@ -15,5 +16,3 @@ data class Room(
     val showCalendarView: Boolean,
     val updateTime: Long
 )
-
-

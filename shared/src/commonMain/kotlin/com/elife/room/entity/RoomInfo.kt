@@ -13,12 +13,13 @@ data class RoomInfo(
     val id: Int = Int.defaultId,
     val name: String = "",
     val icon: String = "",
-    val lastUpdateTime: Long = 0L,
+    val groupName: String = "",
     val listColumnCount: Int = 1,
     val supportQuickAdd: Boolean = false,
     val supportCreateList: Boolean = false,
     val showCalendarView: Boolean = false,
-    val attributes: List<RoomAttribute> = emptyList()
+    val attributes: List<RoomAttributeInfo> = emptyList(),
+    val lastUpdateTime: Long = 0L
 )
 
 @Serializable
