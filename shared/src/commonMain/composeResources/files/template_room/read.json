@@ -1,6 +1,12 @@
 {
   "fields": [
     {
+      "name": "封面",
+      "type": "Image",
+      "required": false,
+      "defaultValue": ""
+    },
+    {
       "name": "名称",
       "type": "Text",
       "required": true,
@@ -87,9 +93,40 @@
       ]
     },
     {
+      "name": "评分",
+      "type": "Rating",
+      "required": false,
+      "defaultValue": 0,
+      "maxValue": 5
+    },
+    {
+      "name": "开始时间",
+      "type": "Datetime",
+      "required": false,
+      "format": "Full"
+    },
+    {
+      "name": "结束时间",
+      "type": "Datetime",
+      "required": false,
+      "format": "Full"
+    },
+    {
+      "name": "封面",
+      "type": "Image",
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "阅读时长",
+      "type": "Duration",
+      "required": false,
+      "defaultValue": ""
+    },
+    {
       "name": "想法",
-      "type": "Text",
-      "required": true,
+      "type": "LongText",
+      "required": false,
       "defaultValue": ""
     }
   ],

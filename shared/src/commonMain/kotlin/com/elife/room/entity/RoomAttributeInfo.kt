@@ -47,6 +47,7 @@ data class NumberRoomAttributeInfo(
     val minValue: Float = 0F,
     val maxValue: Float = 100F,
     val format: NumberFormat = NumberFormat.NUMBER,
+    val allowDecimal: Boolean = false,
     val decimalPlaces: Int = 0,
     val progressBarStyle: ProgressBarStyle = ProgressBarStyle.NONE
 ) : RoomAttributeInfo
@@ -94,4 +95,16 @@ data class DatetimeRoomAttributeInfo(
     val datetime: String,
     val dateFormate: String = DatetimeFormat.FULL.format,
     val use24HourFormate: Boolean = false
+) : RoomAttributeInfo
+
+data class DurationRoomAttributeInfo(
+    override val type: RoomAttributeType = RoomAttributeType.DURATION,
+    override val id: Int,
+    override val name: String,
+    override val description: String,
+    override val required: Boolean,
+    override val defaultValue: String,
+    override val sortOrder: Int,
+    val minValue: Int = 0,
+    val supportedUnits: List<DurationUnit> = listOf(DurationUnit.HOUR)
 ) : RoomAttributeInfo

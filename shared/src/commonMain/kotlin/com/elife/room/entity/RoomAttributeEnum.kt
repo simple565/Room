@@ -14,15 +14,19 @@ enum class RoomAttributeType(val type: String) {
     NUMBER("Number"),
     SELECT("Select"),
     MULTI_SELECT("MultiSelect"),
+    RATING("Rating"),
     SWITCH("Switch"),
     TEXT("Text"),
+    LONG_TEXT("LongText"),
 }
 
 enum class NumberFormat(val format: String) {
     NUMBER("Number"),
+    /**
+     * 数字格式，带逗号分隔
+     */
     NUMBER_WITH_COMMAS("Number with commas"),
-    PERCENT("Percent"),
-    STAR("Star"),
+    PERCENT("Percent");
 }
 
 enum class ProgressBarStyle(val style: String) {
@@ -33,6 +37,15 @@ enum class ProgressBarStyle(val style: String) {
 
 enum class DatetimeFormat(val displayName: String, val format: String) {
     FULL("完整", "yyyy-MM-dd HH:mm:ss"),
-    DATE_ONLY("仅日期", "yyyy-MM-dd"),
-    TIME_ONLY("仅时间", "HH:mm:ss"),
+    DATE("日期", "yyyy-MM-dd"),
+    TIME("时间", "HH:mm:ss");
+}
+
+enum class DurationUnit(val displayName: String) {
+    SECOND("秒"),
+    MINUTE("分"),
+    HOUR("时"),
+    DAY("日"),
+    MONTH("月"),
+    YEAR("年");
 }
