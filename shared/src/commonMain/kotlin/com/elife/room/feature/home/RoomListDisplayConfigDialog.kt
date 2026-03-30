@@ -20,6 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.elife.room.core.ui.composable.AdaptiveDialog
+import com.elife.room.shared.Res
+import com.elife.room.shared.layout_adaptive
+import com.elife.room.shared.layout_grid
+import com.elife.room.shared.layout_grid_column_count_format
+import com.elife.room.shared.layout_list
+import com.elife.room.shared.layout_type
+import com.elife.room.shared.sort_type
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * 列表样式配置对话框
@@ -42,22 +50,24 @@ fun RoomListDisplayConfigDialog(
                 val columnCount = remember { mutableStateOf(0F) }
                 val interactionSource = remember { MutableInteractionSource() }
                 Text(
-                    text = "列表显示模式",
+                    text = stringResource(Res.string.layout_type),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
-                        text = when (columnCount.value) {
-                            0F -> "自适应"
-                            1F -> "列表"
-                            else -> "网格"
-                        },
+                        text = stringResource(
+                            when (columnCount.value.toInt()) {
+                                0 -> Res.string.layout_adaptive
+                                1 -> Res.string.layout_list
+                                else -> Res.string.layout_grid
+                            }
+                        ),
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    if (columnCount.value > 1) {
+                    if (columnCount.value >= 2) {
                         Text(
-                            text = "${columnCount.value.toInt()}列",
+                            text = stringResource(Res.string.layout_grid_column_count_format, columnCount.value.toInt()),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -80,6 +90,11 @@ fun RoomListDisplayConfigDialog(
                         )
                     }
                 )
+                Text(
+                    text = stringResource(Res.string.sort_type),
+                    style = MaterialTheme.typography.titleMedium
+                )
+
             }
         }
     )

@@ -2,6 +2,7 @@ package com.elife.room.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +24,7 @@ import com.elife.room.feature.home.HomePage
 import com.elife.room.feature.settings.SettingsPage
 import com.elife.room.shared.Res
 import com.elife.room.shared.nav_home
+import com.elife.room.shared.nav_log
 import com.elife.room.shared.nav_settings
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
@@ -44,6 +46,7 @@ fun IndexPage(
     var selectedItem by rememberSaveable { mutableStateOf(0) }
     val navigationItemList = listOf(
         NavigationItem(label = stringResource(Res.string.nav_home), icon = Icons.Rounded.Home),
+        NavigationItem(label = stringResource(Res.string.nav_log), icon = Icons.AutoMirrored.Filled.ListAlt),
         NavigationItem(label = stringResource(Res.string.nav_settings), icon = Icons.Rounded.Settings)
     )
     NavigationSuiteScaffold(

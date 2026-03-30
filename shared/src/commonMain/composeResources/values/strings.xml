@@ -8,7 +8,18 @@
     <string name="save">保存</string>
     <string name="required_mark">*</string>
 
+    <string name="layout_type">布局方式</string>
+    <string name="layout_adaptive">自适应</string>
+    <string name="layout_list">列表</string>
+    <string name="layout_grid">网格</string>
+    <string name="layout_grid_column_count_format">$1%d列</string>
+
+    <string name="sort_type">排序方式</string>
+    <string name="sort_type_create_time">添加时间</string>
+    <string name="sort_type_update_time">更新时间</string>
+
     <string name="nav_home">首页</string>
+    <string name="nav_log">日志</string>
     <string name="nav_settings">设置</string>
 
     <string name="room_last_update_format">最近：%1$s</string>

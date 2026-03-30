@@ -18,8 +18,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.AddCircleOutline
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -85,15 +86,26 @@ fun HomePage(
                         onClick = { showAddRoomDialog.value = true },
                         content = {
                             Icon(
-                                imageVector = Icons.Rounded.Add,
+                                imageVector = Icons.Rounded.AddCircleOutline,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier.size(22.dp)
+                            )
+                        }
+                    )
+                    IconButton(
+                        onClick = { showListDisplayConfigDialog.value = true },
+                        content = {
+                            Icon(
+                                imageVector = Icons.Outlined.Settings,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(22.dp)
                             )
                         }
                     )
                 },
-                expandedHeight = 10.dp
+                expandedHeight = 54.dp
             )
         }
     ) { paddingValues ->
@@ -102,7 +114,6 @@ fun HomePage(
                 selectedIndex = roomGroupTabState.selectedIndex,
                 groupList = roomGroupTabState.groupList,
                 onTabClick = viewModel::selectGroupTab,
-                onListConfigSetClick = { showListDisplayConfigDialog.value = true },
                 modifier = Modifier.fillMaxWidth()
             )
             RoomBriefInfoGrid(
@@ -134,7 +145,6 @@ private fun RoomGroupTabRow(
     selectedIndex: Int,
     groupList: List<RoomGroup>,
     onTabClick: (Int) -> Unit,
-    onListConfigSetClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -174,18 +184,6 @@ private fun RoomGroupTabRow(
                         }
                     )
                 }
-            }
-        )
-
-        IconButton(
-            onClick = { onListConfigSetClick() },
-            content = {
-                Icon(
-                    imageVector = Icons.Rounded.Settings,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.size(20.dp)
-                )
             }
         )
     }
@@ -279,7 +277,6 @@ private fun RoomGroupTabRowPreview() {
                 selectedIndex = 0,
                 groupList = groupList,
                 onTabClick = { },
-                onListConfigSetClick = { },
                 modifier = Modifier.fillMaxWidth()
             )
         }
