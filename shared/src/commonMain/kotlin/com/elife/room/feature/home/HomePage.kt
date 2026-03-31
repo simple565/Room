@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.Add
@@ -45,9 +45,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.elife.room.core.ui.theme.AppTheme
+import com.elife.room.core.ui.theme.iconSize
+import com.elife.room.core.ui.theme.spacing
 import com.elife.room.core.ui.tooling.UiModePreview
 import com.elife.room.database.table.RoomGroup
 import com.elife.room.entity.RoomBriefInfo
+import com.elife.room.entity.RoomTemplate
 import com.elife.room.shared.Res
 import com.elife.room.shared.app_name
 import com.elife.room.shared.room_last_update_format
@@ -69,6 +72,7 @@ fun HomePage(
     val roomGroupTabState by viewModel.groupTabsState.collectAsStateWithLifecycle()
     val roomList by viewModel.briefListFlow.collectAsStateWithLifecycle()
     val showAddRoomDialog = remember { mutableStateOf(false) }
+    val showEditRoomDialog = remember { mutableStateOf<RoomTemplate?> (null) }
     val showListDisplayConfigDialog = remember { mutableStateOf(false) }
 
     Scaffold(
@@ -89,7 +93,7 @@ fun HomePage(
                                 imageVector = Icons.Rounded.AddCircleOutline,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(22.dp)
+                                modifier = Modifier.size(MaterialTheme.iconSize.small)
                             )
                         }
                     )
@@ -100,7 +104,7 @@ fun HomePage(
                                 imageVector = Icons.Outlined.Settings,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(22.dp)
+                                modifier = Modifier.size(MaterialTheme.iconSize.small)
                             )
                         }
                     )
@@ -125,8 +129,17 @@ fun HomePage(
     }
 
     if (showAddRoomDialog.value) {
-        EditRoomConfigDialog(
+        AddRoomDialog(
             onDismissRequest = { showAddRoomDialog.value = false },
+            onTemplateSelected = {},
+            modifier = Modifier,
+            windowInfo = windowInfo
+        )
+    }
+
+    if (null != showEditRoomDialog.value) {
+        EditRoomConfigDialog(
+            onDismissRequest = { showEditRoomDialog.value = null },
             modifier = Modifier,
             windowInfo = windowInfo
         )
@@ -165,7 +178,7 @@ private fun RoomGroupTabRow(
                         selected = index == selectedIndex,
                         onClick = { onTabClick(index) },
                         modifier = Modifier
-                            .padding(horizontal = 4.dp)
+                            .padding(horizontal = MaterialTheme.spacing.extraSmall)
                             .height(28.dp)
                             .clip(shape = MaterialTheme.shapes.medium)
                             .background(
@@ -199,9 +212,9 @@ private fun RoomBriefInfoGrid(
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 120.dp),
         modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {
         items(items = shelfBriefList, key = { it.id }) {
             RoomBriefInfoCard(
@@ -220,7 +233,7 @@ private fun RoomBriefInfoGrid(
 private fun RoomBriefInfoCard(briefInfo: RoomBriefInfo, modifier: Modifier = Modifier) {
     ElevatedCard(modifier = modifier) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(8.dp),
+            modifier = Modifier.fillMaxSize().padding(MaterialTheme.spacing.small),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -245,17 +258,15 @@ private fun RoomBriefInfoCard(briefInfo: RoomBriefInfo, modifier: Modifier = Mod
                 )
                 IconButton(
                     onClick = {},
-                    modifier = Modifier.size(24.dp),
-                    shape = RoundedCornerShape(50),
                     content = {
                         Icon(
                             imageVector = Icons.Rounded.Add,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(MaterialTheme.iconSize.small)
                                 .background(
                                     color = MaterialTheme.colorScheme.surfaceVariant,
-                                    shape = RoundedCornerShape(50)
+                                    shape = CircleShape
                                 )
                         )
                     }
@@ -289,7 +300,7 @@ private fun RoomGridPreview() {
     val roomBriefInfo = RoomBriefInfo(id = 1, name = "阅读")
     val list = listOf(roomBriefInfo, roomBriefInfo.copy(id = 2), roomBriefInfo.copy(id = 3))
     AppTheme {
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
             RoomBriefInfoGrid(modifier = Modifier, shelfBriefList = list, onClick = {})
         }
     }

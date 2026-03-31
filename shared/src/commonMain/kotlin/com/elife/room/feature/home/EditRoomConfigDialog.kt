@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.elife.room.core.ext.defaultId
 import com.elife.room.core.ext.isCompact
@@ -29,6 +28,7 @@ import com.elife.room.core.ext.isDefaultId
 import com.elife.room.core.ui.composable.AdaptiveDialog
 import com.elife.room.core.ui.composable.InputTextField
 import com.elife.room.core.ui.composable.TextWithRequiredMark
+import com.elife.room.core.ui.theme.spacing
 import com.elife.room.shared.Res
 import com.elife.room.shared.cancel
 import com.elife.room.shared.done
@@ -41,7 +41,7 @@ import com.elife.room.shared.room_config_title_basic
 import org.jetbrains.compose.resources.stringResource
 
 /**
- * @author Lian
+ * 编辑房间配置对话框
  * @date 2025/12/8
  */
 @Composable
@@ -65,7 +65,7 @@ fun EditRoomConfigDialog(
                     Modifier.fillMaxWidth(if (windowInfo.isCompact()) 1F else 0.7F)
                         .fillMaxHeight(if (windowInfo.isCompact()) 1F else 0.8F)
                 ),
-                contentPadding = PaddingValues(horizontal = 12.dp),
+                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -75,7 +75,7 @@ fun EditRoomConfigDialog(
                         onCancelClick = onDismissRequest,
                         onConfirmClick = {},
                         modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                            .padding(vertical = 12.dp)
+                            .padding(vertical = MaterialTheme.spacing.medium)
                     )
                 }
                 item {

@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.elife.room.core.ui.theme.AppTheme
+import com.elife.room.core.ui.theme.iconSize
+import com.elife.room.core.ui.theme.spacing
 import com.elife.room.core.ui.tooling.UiModePreview
 
 /**
@@ -66,7 +68,7 @@ fun CustomBottomAppBar(
             Row(
                 modifier = modifier
                     .background(backgroundColor, shape = MaterialTheme.shapes.extraLarge)
-                    .padding(4.dp),
+                    .padding(MaterialTheme.spacing.extraSmall),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -85,7 +87,7 @@ fun CustomBottomAppBar(
                                 onClick = {
                                     onItemSelected(index)
                                 }
-                            ).padding(horizontal = 16.dp),
+                            ).padding(horizontal = MaterialTheme.spacing.large),
                         showLabel = showLabels,
                         contentColor = if (index == selectedIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                     )
@@ -114,7 +116,7 @@ private fun CustomBottomAppBarItem(
             imageVector = item.icon,
             contentDescription = item.label,
             tint = contentColor,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(MaterialTheme.iconSize.medium)
         )
 
         if (showLabel) {

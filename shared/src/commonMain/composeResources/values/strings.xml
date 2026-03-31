@@ -12,7 +12,7 @@
     <string name="layout_adaptive">自适应</string>
     <string name="layout_list">列表</string>
     <string name="layout_grid">网格</string>
-    <string name="layout_grid_column_count_format">$1%d列</string>
+    <string name="layout_grid_column_count_format">%1$d列</string>
 
     <string name="sort_type">排序方式</string>
     <string name="sort_type_create_time">添加时间</string>
