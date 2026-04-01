@@ -5,12 +5,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -29,11 +35,14 @@ import com.elife.room.core.ui.composable.AdaptiveDialog
 import com.elife.room.core.ui.theme.spacing
 import com.elife.room.entity.RoomTemplate
 import com.elife.room.shared.Res
+import com.elife.room.shared.cancel
+import com.elife.room.shared.room_config_edit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
 
 
 /**
@@ -66,12 +75,31 @@ fun AddRoomDialog(
                         .fillMaxHeight(if (windowInfo.isCompact()) 0.75F else 0.55F)
                 )
             ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(start = MaterialTheme.spacing.medium, top = MaterialTheme.spacing.small),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(Res.string.room_config_edit),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    IconButton(
+                        onClick = onDismissRequest,
+                        shape = CircleShape,
+                        content = {
+                            Icon(
+                                imageVector = Icons.Rounded.Close,
+                                contentDescription = stringResource(Res.string.cancel),
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    )
+                }
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        horizontal = MaterialTheme.spacing.medium,
-                        vertical = MaterialTheme.spacing.large
-                    ),
+                    contentPadding = PaddingValues(MaterialTheme.spacing.medium),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -101,6 +129,7 @@ fun AddRoomDialog(
     )
 
     if (showEditRoomDialogState.value != null) {
+        println("5555555")
         EditRoomConfigDialog(
             templateFileName = showEditRoomDialogState.value!!,
             onDismissRequest = { showEditRoomDialogState.value = null },

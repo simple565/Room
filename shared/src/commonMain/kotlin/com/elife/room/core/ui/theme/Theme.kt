@@ -252,7 +252,7 @@ fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) mediumContrastDarkColorScheme else mediumContrastLightColorScheme
+    val colorScheme = if (darkTheme) darkScheme else lightScheme
 
     CompositionLocalProvider(
         LocalSpacing provides Spacing(),
