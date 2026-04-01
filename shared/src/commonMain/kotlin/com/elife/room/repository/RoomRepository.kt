@@ -27,4 +27,8 @@ class RoomRepository : KoinComponent {
     suspend fun getRoomDetail(id: Int): Room? {
         return roomDao.getRoom(id)
     }
+
+    suspend fun addRoom(room: Room) {
+        roomDao.insert(room)
+    }
 }

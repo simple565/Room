@@ -1,12 +1,15 @@
 package com.elife.room.entity
 
+import kotlinx.serialization.Serializable
+
 /**
  * 房间属性
  * @author lianml
  * @date 2025/11/27
  */
+@Serializable(with = RoomAttributeInfoSerializer::class)
 interface RoomAttributeInfo {
-    val type: RoomAttributeType
+    val type: String
     val id: Int
     val name: String
     val description: String
@@ -15,9 +18,10 @@ interface RoomAttributeInfo {
     val sortOrder: Int
 }
 
+@Serializable
 data class TextRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.TEXT,
-    override val id: Int,
+    override val type: String = RoomAttributeType.TEXT.name,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -25,9 +29,10 @@ data class TextRoomAttributeInfo(
     override val sortOrder: Int
 ) : RoomAttributeInfo
 
+@Serializable
 data class ImageRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.IMAGE,
-    override val id: Int,
+    override val type: String = RoomAttributeType.IMAGE.name,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -35,9 +40,10 @@ data class ImageRoomAttributeInfo(
     override val sortOrder: Int
 ) : RoomAttributeInfo
 
+@Serializable
 data class NumberRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.NUMBER,
-    override val id: Int,
+    override val type: String = RoomAttributeType.NUMBER.type,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -46,15 +52,16 @@ data class NumberRoomAttributeInfo(
     val unit: String = "",
     val minValue: Float = 0F,
     val maxValue: Float = 100F,
-    val format: NumberFormat = NumberFormat.NUMBER,
+    val format: String = NumberFormat.NUMBER.name,
     val allowDecimal: Boolean = false,
     val decimalPlaces: Int = 0,
-    val progressBarStyle: ProgressBarStyle = ProgressBarStyle.NONE
+    val progressBarStyle: String = ProgressBarStyle.NONE.name
 ) : RoomAttributeInfo
 
+@Serializable
 data class SwitchRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.SWITCH,
-    override val id: Int,
+    override val type: String = RoomAttributeType.SWITCH.type,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -62,9 +69,10 @@ data class SwitchRoomAttributeInfo(
     override val sortOrder: Int
 ) : RoomAttributeInfo
 
+@Serializable
 data class SelectRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.SELECT,
-    override val id: Int,
+    override val type: String = RoomAttributeType.SELECT.type,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -73,9 +81,10 @@ data class SelectRoomAttributeInfo(
     val options: List<String> = emptyList()
 ) : RoomAttributeInfo
 
+@Serializable
 data class MultiSelectRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.MULTI_SELECT,
-    override val id: Int,
+    override val type: String = RoomAttributeType.MULTI_SELECT.type,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -84,27 +93,50 @@ data class MultiSelectRoomAttributeInfo(
     val options: List<String> = emptyList()
 ) : RoomAttributeInfo
 
+@Serializable
 data class DatetimeRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.DATETIME,
-    override val id: Int,
+    override val type: String = RoomAttributeType.DATETIME.type,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
     override val defaultValue: String,
     override val sortOrder: Int,
-    val datetime: String,
-    val dateFormate: String = DatetimeFormat.FULL.format,
-    val use24HourFormate: Boolean = false
+    val format: String = DatetimeFormat.FULL.format
 ) : RoomAttributeInfo
 
+@Serializable
 data class DurationRoomAttributeInfo(
-    override val type: RoomAttributeType = RoomAttributeType.DURATION,
-    override val id: Int,
+    override val type: String = RoomAttributeType.DURATION.type,
+    override val id: Int = 0,
     override val name: String,
     override val description: String,
     override val required: Boolean,
     override val defaultValue: String,
     override val sortOrder: Int,
     val minValue: Int = 0,
-    val supportedUnits: List<DurationUnit> = listOf(DurationUnit.HOUR)
+    val supportedUnits: List<String> = listOf(DurationUnit.HOUR.name)
+) : RoomAttributeInfo
+
+@Serializable
+data class RatingRoomAttributeInfo(
+    override val type: String = RoomAttributeType.RATING.type,
+    override val id: Int = 0,
+    override val name: String,
+    override val description: String,
+    override val required: Boolean,
+    override val defaultValue: String,
+    override val sortOrder: Int,
+    val maxValue: Int = 5
+) : RoomAttributeInfo
+
+@Serializable
+data class LongTextRoomAttributeInfo(
+    override val type: String = RoomAttributeType.LONG_TEXT.type,
+    override val id: Int = 0,
+    override val name: String,
+    override val description: String,
+    override val required: Boolean,
+    override val defaultValue: String,
+    override val sortOrder: Int
 ) : RoomAttributeInfo

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
@@ -21,7 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.draw.clip
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.elife.room.core.ext.defaultId
 import com.elife.room.core.ext.isCompact
 import com.elife.room.core.ext.isDefaultId
@@ -29,6 +31,7 @@ import com.elife.room.core.ui.composable.AdaptiveDialog
 import com.elife.room.core.ui.composable.InputTextField
 import com.elife.room.core.ui.composable.TextWithRequiredMark
 import com.elife.room.core.ui.theme.spacing
+import com.elife.room.entity.RoomInfo
 import com.elife.room.shared.Res
 import com.elife.room.shared.cancel
 import com.elife.room.shared.done
@@ -38,7 +41,9 @@ import com.elife.room.shared.room_config_edit
 import com.elife.room.shared.room_config_name
 import com.elife.room.shared.room_config_title_attribute
 import com.elife.room.shared.room_config_title_basic
+import io.ktor.util.Hash
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 编辑房间配置对话框
@@ -50,44 +55,72 @@ fun EditRoomConfigDialog(
     modifier: Modifier = Modifier,
     roomId: Int = Int.defaultId,
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
-    viewModel: EditRoomViewModel = viewModel { EditRoomViewModel() }
+    viewModel: EditRoomViewModel = koinViewModel()
 ) {
-    LaunchedEffect(roomId) {
-        viewModel.loadRoomConfig(roomId)
-    }
-    // val roomInfo by viewModel.roomInfoState.collectAsStateWithLifecycle()
+}
 
+@Composable
+fun EditRoomConfigDialog(
+    templateFileName: String,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
+    viewModel: EditRoomViewModel = koinViewModel()
+) {
+    LaunchedEffect(templateFileName) {
+        viewModel.loadRoomInfo(templateFileName)
+    }
+
+    val roomInfo = viewModel.roomInfo.collectAsStateWithLifecycle()
+
+    EditRoomConfigDialog(
+        roomInfo = roomInfo.value,
+        onDismissRequest = onDismissRequest,
+        modifier = modifier,
+        windowInfo = windowInfo
+    )
+}
+
+
+@Composable
+fun EditRoomConfigDialog(
+    roomInfo: RoomInfo,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
+) {
     AdaptiveDialog(
         onDismissRequest = onDismissRequest,
         content = {
-            LazyColumn(
+            Column(
                 modifier = modifier.then(
                     Modifier.fillMaxWidth(if (windowInfo.isCompact()) 1F else 0.7F)
-                        .fillMaxHeight(if (windowInfo.isCompact()) 1F else 0.8F)
+                        .fillMaxHeight(if (windowInfo.isCompact()) 0.85F else 0.55F)
+                        .padding(horizontal = MaterialTheme.spacing.small)
                 ),
-                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                item {
-                    Title(
-                        isNewRoom = roomId.isDefaultId,
-                        onCancelClick = onDismissRequest,
-                        onConfirmClick = {},
-                        modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                            .padding(vertical = MaterialTheme.spacing.medium)
-                    )
-                }
-                item {
-                    RoomNameRow(
-                        name = "roomInfo.name",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-                item {
-                    BasicConfigColumn(
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                Title(
+                    isNewRoom = roomInfo.id.isDefaultId,
+                    onCancelClick = onDismissRequest,
+                    onConfirmClick = {},
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                        .padding(MaterialTheme.spacing.medium)
+                )
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight().clip(MaterialTheme.shapes.small),
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        Text("属性")
+                    }
+                    items(items = roomInfo.attributes, key = { Hash.combine(it.type, it.name) }) {
+                        RoomNameRow(
+                            name = it.name,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
         }
@@ -99,7 +132,7 @@ private fun Title(
     isNewRoom: Boolean,
     onCancelClick: () -> Unit,
     onConfirmClick: () -> Unit,
-     modifier: Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,

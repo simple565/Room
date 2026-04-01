@@ -10,9 +10,9 @@ data class Room(
     val groupId: Int,
     val name: String,
     val icon: String,
-    val listColumnCount: Int,
-    val supportQuickAdd: Boolean,
+    val supportAddBySearch: Boolean,
     val supportCreateList: Boolean,
-    val showCalendarView: Boolean,
+    val supportQuickAdd: Boolean,
+    val createTime: Long,
     val updateTime: Long
 )

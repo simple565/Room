@@ -14,11 +14,11 @@ data class RoomInfo(
     val name: String = "",
     val icon: String = "",
     val groupName: String = "",
-    val listColumnCount: Int = 1,
+    val supportAddBySearch: Boolean = false,
     val supportQuickAdd: Boolean = false,
     val supportCreateList: Boolean = false,
-    val showCalendarView: Boolean = false,
     val attributes: List<RoomAttributeInfo> = emptyList(),
+    val createTime: Long = 0L,
     val lastUpdateTime: Long = 0L
 )
 

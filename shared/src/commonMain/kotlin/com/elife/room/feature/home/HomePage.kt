@@ -50,7 +50,6 @@ import com.elife.room.core.ui.theme.spacing
 import com.elife.room.core.ui.tooling.UiModePreview
 import com.elife.room.database.table.RoomGroup
 import com.elife.room.entity.RoomBriefInfo
-import com.elife.room.entity.RoomTemplate
 import com.elife.room.shared.Res
 import com.elife.room.shared.app_name
 import com.elife.room.shared.room_last_update_format
@@ -72,7 +71,7 @@ fun HomePage(
     val roomGroupTabState by viewModel.groupTabsState.collectAsStateWithLifecycle()
     val roomList by viewModel.briefListFlow.collectAsStateWithLifecycle()
     val showAddRoomDialog = remember { mutableStateOf(false) }
-    val showEditRoomDialog = remember { mutableStateOf<RoomTemplate?> (null) }
+    val showEditRoomDialog = remember { mutableStateOf<RoomBriefInfo?> (null) }
     val showListDisplayConfigDialog = remember { mutableStateOf(false) }
 
     Scaffold(
@@ -131,16 +130,14 @@ fun HomePage(
     if (showAddRoomDialog.value) {
         AddRoomDialog(
             onDismissRequest = { showAddRoomDialog.value = false },
-            onTemplateSelected = {},
-            modifier = Modifier,
             windowInfo = windowInfo
         )
     }
 
     if (null != showEditRoomDialog.value) {
         EditRoomConfigDialog(
+            roomId = showEditRoomDialog.value!!.id,
             onDismissRequest = { showEditRoomDialog.value = null },
-            modifier = Modifier,
             windowInfo = windowInfo
         )
     }

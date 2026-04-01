@@ -1,15 +1,16 @@
 package com.elife.room.feature.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import com.elife.room.core.ext.isCompact
 import com.elife.room.core.ui.composable.AdaptiveDialog
 import com.elife.room.core.ui.theme.spacing
@@ -41,11 +43,11 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @Composable
 fun AddRoomDialog(
     onDismissRequest: () -> Unit,
-    onTemplateSelected: (RoomTemplate?) -> Unit,
     modifier: Modifier = Modifier,
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
     var templates by remember { mutableStateOf<List<RoomTemplate>>(emptyList()) }
+    val showEditRoomDialogState = remember { mutableStateOf<String?>(null)}
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
@@ -58,40 +60,51 @@ fun AddRoomDialog(
     AdaptiveDialog(
         onDismissRequest = onDismissRequest,
         content = {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = modifier.then(
+                    Modifier.fillMaxWidth(if (windowInfo.isCompact()) 1F else 0.7F)
+                        .fillMaxHeight(if (windowInfo.isCompact()) 0.75F else 0.55F)
+                )
+            ) {
                 LazyColumn(
-                    modifier = modifier.then(
-                        Modifier.fillMaxWidth(if (windowInfo.isCompact()) 1F else 0.7F)
-                            .fillMaxHeight(if (windowInfo.isCompact()) 0.75F else 0.55F)
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(
+                        horizontal = MaterialTheme.spacing.medium,
+                        vertical = MaterialTheme.spacing.large
                     ),
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium, vertical = MaterialTheme.spacing.large),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(templates, key = { it.name }) { template ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = MaterialTheme.spacing.extraSmall)
-                                .clickable { onTemplateSelected(template) }
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                                .background(color = MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
+                                .clip(shape = MaterialTheme.shapes.medium)
+                                .clickable { showEditRoomDialogState.value = template.file }
+                                .padding(MaterialTheme.spacing.large)
                         ) {
-                            Column(
-                                modifier = Modifier.padding(MaterialTheme.spacing.large)
-                            ) {
-                                Text(
-                                    text = template.name,
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                                Text(
-                                    text = template.description,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
+                            Text(
+                                text = template.name,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = template.description,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
+
                     }
                 }
             }
         }
     )
+
+    if (showEditRoomDialogState.value != null) {
+        EditRoomConfigDialog(
+            templateFileName = showEditRoomDialogState.value!!,
+            onDismissRequest = { showEditRoomDialogState.value = null },
+            windowInfo = windowInfo
+        )
+    }
 }

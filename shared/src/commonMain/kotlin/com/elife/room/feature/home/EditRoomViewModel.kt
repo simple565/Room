@@ -5,11 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.elife.room.core.ext.defaultId
 import com.elife.room.database.dao.RoomDao
 import com.elife.room.database.table.Room
+import com.elife.room.entity.RoomInfo
+import com.elife.room.entity.RoomTemplate
+import com.elife.room.repository.RoomRepository
+import com.elife.room.shared.Res
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.random.Random
@@ -19,9 +26,9 @@ import kotlin.time.Clock
  * @author lianml
  * @date 2025/11/6
  */
-class EditRoomViewModel : ViewModel(), KoinComponent {
-    private val _roomId: MutableStateFlow<Int> = MutableStateFlow(Int.defaultId)
-    private val roomDao by inject<RoomDao>()
+class EditRoomViewModel(private val repository: RoomRepository) : ViewModel() {
+    private val _roomInfoState: MutableStateFlow<RoomInfo> = MutableStateFlow(RoomInfo())
+    val roomInfo: StateFlow<RoomInfo> = _roomInfoState.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     /*val roomInfoState = combine(
@@ -46,8 +53,15 @@ class EditRoomViewModel : ViewModel(), KoinComponent {
         started = SharingStarted.WhileSubscribed()
     )
 */
-    fun loadRoomConfig(id: Int) {
-        _roomId.value = id
+    fun loadRoomInfo(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+
+    }
+
+    fun loadRoomInfo(fileName: String) = viewModelScope.launch(Dispatchers.IO) {
+        val roomInfo = Json.decodeFromString<RoomInfo>(
+            Res.readBytes("files/template_room/${fileName}").decodeToString()
+        )
+        _roomInfoState.value = roomInfo
     }
 
     fun addRoom() = viewModelScope.launch(Dispatchers.IO) {
@@ -56,12 +70,12 @@ class EditRoomViewModel : ViewModel(), KoinComponent {
             groupId = Int.defaultId,
             name = "Room ${Random.nextInt(10)}",
             icon = "",
-            listColumnCount = 3,
             supportCreateList = false,
             supportQuickAdd = false,
-            showCalendarView = false,
+            supportAddBySearch = false,
+            createTime = Clock.System.now().toEpochMilliseconds(),
             updateTime = Clock.System.now().toEpochMilliseconds(),
         )
-        roomDao.insert(room)
+        repository.addRoom(room)
     }
 }

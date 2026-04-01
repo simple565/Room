@@ -1,36 +1,34 @@
 {
-  "fields": [
+  "attributes": [
     {
       "name": "封面",
       "type": "Image",
       "required": false,
-      "defaultValue": ""
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 0
     },
     {
       "name": "名称",
       "type": "Text",
       "required": true,
-      "defaultValue": ""
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 1
     },
     {
       "name": "状态",
       "type": "Select",
       "required": true,
       "options": [
-        {
-          "name": "未读"
-        },
-        {
-          "name": "在读"
-        },
-        {
-          "name": "已读"
-        },
-        {
-          "name": "废弃"
-        }
+        "未读",
+        "在读",
+        "已读",
+        "放弃"
       ],
-      "defaultValue": "未读"
+      "defaultValue": "未读",
+      "description": "",
+      "sortOrder": 2
     },
     {
       "name": "进度",
@@ -40,100 +38,96 @@
       "format": "Number",
       "progressBarStyle": "None",
       "minValue": 0,
-      "maxValue": 99
+      "maxValue": 99,
+      "defaultValue": "0",
+      "description": "",
+      "sortOrder": 3
     },
     {
       "name": "作者",
       "type": "Text",
       "required": false,
-      "defaultValue": ""
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 4
     },
     {
       "name": "类型",
       "type": "Select",
       "required": false,
       "options": [
-        {
-          "name": "出版书籍"
-        },
-        {
-          "name": "有声读物"
-        },
-        {
-          "name": "期刊杂志"
-        },
-        {
-          "name": "网络文学"
-        },
-        {
-          "name": "漫画"
-        }
-      ]
+        "出版书籍",
+        "有声读物",
+        "期刊杂志",
+        "网络文学",
+        "漫画"
+      ],
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 5
     },
     {
       "name": "标签",
       "type": "MultiSelect",
       "required": false,
       "options": [
-        {
-          "name": "推理"
-        },
-        {
-          "name": "历史"
-        },
-        {
-          "name": "科技"
-        },
-        {
-          "name": "科幻"
-        },
-        {
-          "name": "传记"
-        }
-      ]
+        "推理",
+        "历史",
+        "科技",
+        "科幻",
+        "传记"
+      ],
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 6
     },
     {
       "name": "评分",
       "type": "Rating",
       "required": false,
-      "defaultValue": 0,
-      "maxValue": 5
+      "defaultValue": "0",
+      "maxValue": 5,
+      "description": "",
+      "sortOrder": 7
     },
     {
       "name": "开始时间",
       "type": "Datetime",
       "required": false,
-      "format": "Full"
+      "format": "Full",
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 8
     },
     {
       "name": "结束时间",
       "type": "Datetime",
       "required": false,
-      "format": "Full"
-    },
-    {
-      "name": "封面",
-      "type": "Image",
-      "required": false,
-      "defaultValue": ""
+      "defaultValue": "",
+      "format": "Full",
+      "description": "",
+      "sortOrder": 9
     },
     {
       "name": "阅读时长",
       "type": "Duration",
       "required": false,
-      "defaultValue": ""
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 10
     },
     {
       "name": "想法",
       "type": "LongText",
       "required": false,
-      "defaultValue": ""
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 11
     }
   ],
   "name": "阅读",
-  "listColumnCount": 3,
-  "supportQuickCreate": true,
+  "icon": "",
+  "supportAddBySearch": false,
   "supportCreateList": true,
-  "showCalendarView": true,
-  "supportAddBySearch": false
+  "supportQuickAdd": true
 }
