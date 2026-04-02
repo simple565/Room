@@ -256,7 +256,7 @@ fun AppTheme(
 
     CompositionLocalProvider(
         LocalSpacing provides Spacing(),
-        LocalIconSize provides Spacing(extraSmall = 16.dp, small = 20.dp, medium = 24.dp, large = 32.dp)
+        LocalIconSize provides Spacing(extraSmall = 16.dp, small = 20.dp, medium = 24.dp, large = 32.dp, extraLarge = 48.dp)
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

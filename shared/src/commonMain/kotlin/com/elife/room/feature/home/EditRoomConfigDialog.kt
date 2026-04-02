@@ -1,6 +1,7 @@
 package com.elife.room.feature.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,19 +11,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material3.Icon
@@ -34,6 +32,7 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,6 +43,7 @@ import com.elife.room.core.ext.defaultId
 import com.elife.room.core.ext.isCompact
 import com.elife.room.core.ext.isDefaultId
 import com.elife.room.core.ui.composable.AdaptiveDialog
+import com.elife.room.core.ui.composable.CommonDialogTitle
 import com.elife.room.core.ui.composable.InputTextField
 import com.elife.room.core.ui.composable.TextWithRequiredMark
 import com.elife.room.core.ui.theme.AppTheme
@@ -53,8 +53,6 @@ import com.elife.room.core.ui.tooling.UiModePreview
 import com.elife.room.entity.RoomAttributeInfo
 import com.elife.room.entity.RoomInfo
 import com.elife.room.shared.Res
-import com.elife.room.shared.cancel
-import com.elife.room.shared.done
 import com.elife.room.shared.room_config_add
 import com.elife.room.shared.room_config_add_attribute
 import com.elife.room.shared.room_config_edit
@@ -113,9 +111,13 @@ fun EditRoomConfigDialog(
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
     val attributesState = remember { mutableStateOf(roomInfo.attributes) }
+    val showAddAttrDialog = remember { mutableStateOf(false)}
 
-    val switchRowModifier = Modifier.padding(vertical = MaterialTheme.spacing.small)
-        .fillMaxWidth().wrapContentHeight()
+    LaunchedEffect(roomInfo.attributes) {
+        attributesState.value = roomInfo.attributes
+    }
+
+    val switchRowModifier = Modifier.fillMaxWidth().wrapContentHeight()
         .background(
             color = MaterialTheme.colorScheme.surface,
             shape = MaterialTheme.shapes.medium
@@ -131,19 +133,18 @@ fun EditRoomConfigDialog(
                         .fillMaxHeight(if (windowInfo.isCompact()) 0.85F else 0.55F)
                 ),
             ) {
-                Title(
-                    isNewRoom = roomInfo.id.isDefaultId,
+                CommonDialogTitle(
+                    title = stringResource(if (roomInfo.id.isDefaultId) Res.string.room_config_add else Res.string.room_config_edit),
                     onCancelClick = onDismissRequest,
-                    onConfirmClick = { onConfirmClick(roomInfo.copy(attributes = attributesState.value) ) },
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                        .padding(horizontal = MaterialTheme.spacing.small)
+                    onConfirmClick = { onConfirmClick(roomInfo.copy(attributes = attributesState.value)) }
                 )
 
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth().scrollable(
                         state = rememberScrollState(),
                         orientation = Orientation.Vertical
-                    ).padding(MaterialTheme.spacing.medium)
+                    ).padding(MaterialTheme.spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
                 ) {
                     item {
                         RoomNameRow(
@@ -162,17 +163,18 @@ fun EditRoomConfigDialog(
                     item {
                         Text(
                             text = stringResource(Res.string.room_config_title_attribute),
-                            modifier = Modifier.padding(vertical = MaterialTheme.spacing.medium),
                             style = MaterialTheme.typography.titleSmall
                         )
                     }
                     item {
                         CustomAttributeColumn(
                             attributes = attributesState.value,
+                            onAttributeAdd = { showAddAttrDialog.value = true },
+                            onAttributeRemove = { attributesState.value = attributesState.value.minus(it) },
                             modifier = Modifier.fillMaxWidth().weight(1F)
                                 .background(
                                     color = MaterialTheme.colorScheme.surface,
-                                    shape = MaterialTheme.shapes.small
+                                    shape = MaterialTheme.shapes.medium
                                 ),
                         )
                     }
@@ -196,46 +198,14 @@ fun EditRoomConfigDialog(
             }
         }
     )
-}
 
-@Composable
-private fun Title(
-    isNewRoom: Boolean,
-    onCancelClick: () -> Unit,
-    onConfirmClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = onCancelClick,
-            shape = CircleShape,
-            content = {
-                Icon(
-                    imageVector = if (isNewRoom) Icons.AutoMirrored.Rounded.ArrowBack else Icons.Rounded.Close,
-                    contentDescription = stringResource(Res.string.cancel),
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-        )
-        Text(
-            text = stringResource(if (isNewRoom) Res.string.room_config_add else Res.string.room_config_edit),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        IconButton(
-            onClick = onConfirmClick,
-            shape = CircleShape,
-            content = {
-                Icon(
-                    imageVector = Icons.Rounded.Done,
-                    contentDescription = stringResource(Res.string.done),
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
+    if (showAddAttrDialog.value) {
+        AddAttributeDialog(
+            onDismissRequest = { showAddAttrDialog.value = false },
+            onConfirmClick = {
+            },
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            windowInfo = windowInfo
         )
     }
 }
@@ -243,23 +213,32 @@ private fun Title(
 @Composable
 private fun CustomAttributeColumn(
     attributes: List<RoomAttributeInfo>,
+    onAttributeAdd: () -> Unit,
+    onAttributeRemove: (RoomAttributeInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
-        val itemModifier = Modifier.fillMaxWidth()
-            .padding(
-                horizontal = MaterialTheme.spacing.small,
-                vertical = MaterialTheme.spacing.medium
-            )
+    val itemModifier = Modifier.fillMaxWidth()
+        .padding(
+            horizontal = MaterialTheme.spacing.small,
+            vertical = MaterialTheme.spacing.medium
+        )
 
+    Column(modifier) {
         attributes.forEach {
-            CustomAttributeRow(
-                name = it.name,
-                modifier = itemModifier
-            )
+            key(it.name, it.type) {
+                CustomAttributeRow(
+                    name = it.name,
+                    onAttributeRemove = { onAttributeRemove(it) },
+                    modifier = itemModifier
+                )
+            }
         }
         Row(
-            modifier = itemModifier,
+            modifier = itemModifier.clickable(
+                indication = null,
+                interactionSource = null,
+                onClick = onAttributeAdd
+            ),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -302,7 +281,11 @@ private fun RoomNameRow(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CustomAttributeRow(name: String, modifier: Modifier = Modifier) {
+private fun CustomAttributeRow(
+    name: String,
+    onAttributeRemove: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier.then(
             Modifier.fillMaxWidth().wrapContentHeight()
@@ -310,14 +293,21 @@ private fun CustomAttributeRow(name: String, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.Rounded.RemoveCircle,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.error
+        IconButton(
+            onClick = onAttributeRemove,
+            modifier = Modifier.size(MaterialTheme.iconSize.large),
+            content = {
+                Icon(
+                    imageVector = Icons.Rounded.RemoveCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
         )
         Text(
             text = name,
             style = MaterialTheme.typography.bodyMedium,
+            lineHeight = MaterialTheme.typography.bodyMedium.fontSize,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.small)
         )
@@ -358,22 +348,6 @@ private fun SwitchAttributeRow(
     }
 }
 
-
-@UiModePreview
-@Composable
-private fun TitlePreview() {
-    AppTheme {
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-            Title(
-                isNewRoom = true,
-                onCancelClick = {},
-                onConfirmClick = {},
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
-
 @UiModePreview
 @Composable
 private fun AttributeRowPreview() {
@@ -387,6 +361,7 @@ private fun AttributeRowPreview() {
             )
             CustomAttributeRow(
                 name = "属性名称",
+                onAttributeRemove = {},
                 modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface)
             )
         }
