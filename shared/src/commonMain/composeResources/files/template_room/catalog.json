@@ -1,7 +1,12 @@
 [
   {
-    "name": "阅读",
+    "name": "书籍",
     "description": "阅读记录",
-    "file": "read.json"
+    "file": "book.json"
+  },
+  {
+    "name": "影视",
+    "description": "观影记录",
+    "file": "movie.json"
   }
 ]

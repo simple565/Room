@@ -1,7 +1,7 @@
 {
   "attributes": [
     {
-      "name": "封面",
+      "name": "海报",
       "type": "Image",
       "required": false,
       "defaultValue": "",
@@ -21,12 +21,12 @@
       "type": "Select",
       "required": true,
       "options": [
-        "未读",
-        "在读",
-        "已读",
+        "未看",
+        "在看",
+        "已看",
         "放弃"
       ],
-      "defaultValue": "未读",
+      "defaultValue": "未看",
       "description": "",
       "sortOrder": 2
     },
@@ -34,17 +34,17 @@
       "name": "进度",
       "type": "Number",
       "required": false,
-      "unit": "页",
+      "unit": "分钟",
       "format": "Number",
       "progressBarStyle": "None",
       "minValue": 0,
-      "maxValue": 99,
+      "maxValue": 999,
       "defaultValue": "0",
       "description": "",
       "sortOrder": 3
     },
     {
-      "name": "作者",
+      "name": "主创",
       "type": "Text",
       "required": false,
       "defaultValue": "",
@@ -56,11 +56,11 @@
       "type": "Select",
       "required": false,
       "options": [
-        "出版书籍",
-        "有声读物",
-        "期刊杂志",
-        "网络文学",
-        "漫画"
+        "电影",
+        "电视剧",
+        "纪录片",
+        "动画",
+        "综艺"
       ],
       "defaultValue": "",
       "description": "",
@@ -71,11 +71,14 @@
       "type": "MultiSelect",
       "required": false,
       "options": [
-        "推理",
-        "历史",
-        "科技",
+        "动作",
         "科幻",
-        "传记"
+        "悬疑",
+        "喜剧",
+        "爱情",
+        "恐怖",
+        "战争",
+        "历史"
       ],
       "defaultValue": "",
       "description": "",
@@ -109,7 +112,7 @@
       "sortOrder": 9
     },
     {
-      "name": "阅读时长",
+      "name": "观看时长",
       "type": "Duration",
       "required": false,
       "defaultValue": "",
@@ -117,7 +120,7 @@
       "sortOrder": 10
     },
     {
-      "name": "想法",
+      "name": "感想",
       "type": "LongText",
       "required": false,
       "defaultValue": "",
@@ -125,9 +128,9 @@
       "sortOrder": 11
     }
   ],
-  "name": "阅读",
+  "name": "观影",
   "icon": "",
-  "supportAddBySearch": false,
+  "supportAddBySearch": true,
   "supportCreateList": true,
   "supportQuickAdd": true
 }
