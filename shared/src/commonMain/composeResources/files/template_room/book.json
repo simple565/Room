@@ -129,5 +129,5 @@
   "icon": "",
   "supportAddBySearch": true,
   "supportCreateList": true,
-  "supportQuickAdd": true
+  "supportQuickAdd": false
 }

@@ -17,6 +17,15 @@
       "sortOrder": 1
     },
     {
+      "name": "观看时间",
+      "type": "Datetime",
+      "required": true,
+      "format": "Full",
+      "defaultValue": "",
+      "description": "",
+      "sortOrder": 2
+    },
+    {
       "name": "状态",
       "type": "Select",
       "required": true,
@@ -28,7 +37,7 @@
       ],
       "defaultValue": "未看",
       "description": "",
-      "sortOrder": 2
+      "sortOrder": 3
     },
     {
       "name": "进度",
@@ -40,14 +49,6 @@
       "minValue": 0,
       "maxValue": 999,
       "defaultValue": "0",
-      "description": "",
-      "sortOrder": 3
-    },
-    {
-      "name": "主创",
-      "type": "Text",
-      "required": false,
-      "defaultValue": "",
       "description": "",
       "sortOrder": 4
     },
@@ -94,30 +95,12 @@
       "sortOrder": 7
     },
     {
-      "name": "开始时间",
-      "type": "Datetime",
+      "name": "主创",
+      "type": "Text",
       "required": false,
-      "format": "Full",
       "defaultValue": "",
       "description": "",
       "sortOrder": 8
-    },
-    {
-      "name": "结束时间",
-      "type": "Datetime",
-      "required": false,
-      "defaultValue": "",
-      "format": "Full",
-      "description": "",
-      "sortOrder": 9
-    },
-    {
-      "name": "观看时长",
-      "type": "Duration",
-      "required": false,
-      "defaultValue": "",
-      "description": "",
-      "sortOrder": 10
     },
     {
       "name": "感想",
@@ -125,12 +108,12 @@
       "required": false,
       "defaultValue": "",
       "description": "",
-      "sortOrder": 11
+      "sortOrder": 9
     }
   ],
   "name": "观影",
   "icon": "",
   "supportAddBySearch": true,
   "supportCreateList": true,
-  "supportQuickAdd": true
+  "supportQuickAdd": false
 }

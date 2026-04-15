@@ -10,3 +10,9 @@ val Int.Companion.defaultId: Int
 
 val Int.isDefaultId : Boolean
     get() = this == Int.defaultId
+
+val Long.Companion.defaultId: Long
+    get() = 0L
+
+val Long.isDefaultId : Boolean
+    get() = this == Long.defaultId

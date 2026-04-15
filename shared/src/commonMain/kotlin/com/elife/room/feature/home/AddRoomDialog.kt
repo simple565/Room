@@ -17,10 +17,8 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,12 +47,12 @@ fun AddRoomDialog(
     modifier: Modifier = Modifier,
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
-    var templates by remember { mutableStateOf<List<RoomTemplate>>(emptyList()) }
+    val templates = remember { mutableStateOf<List<RoomTemplate>>(emptyList()) }
     val showEditRoomDialogState = remember { mutableStateOf<String?>(null)}
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            templates = Json.decodeFromString<List<RoomTemplate>>(
+            templates.value = Json.decodeFromString<List<RoomTemplate>>(
                 Res.readBytes("files/template_room/catalog.json").decodeToString()
             )
         }
@@ -76,10 +74,10 @@ fun AddRoomDialog(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(MaterialTheme.spacing.medium),
-                    verticalArrangement = Arrangement.Top,
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(templates, key = { it.name }) { template ->
+                    items(items = templates.value, key = { it.name }) { template ->
                         Column(
                             modifier = Modifier.fillMaxWidth()
                                 .background(color = MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
@@ -105,10 +103,14 @@ fun AddRoomDialog(
     )
 
     if (showEditRoomDialogState.value != null) {
-        println("5555555")
         EditRoomConfigDialog(
             templateFileName = showEditRoomDialogState.value!!,
-            onDismissRequest = { showEditRoomDialogState.value = null },
+            onDismissRequest = {
+                showEditRoomDialogState.value = null
+                if (it != null) {
+                    onDismissRequest()
+                }
+            },
             windowInfo = windowInfo
         )
     }

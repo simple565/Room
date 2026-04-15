@@ -39,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.elife.room.core.ext.defaultId
 import com.elife.room.core.ext.isCompact
 import com.elife.room.core.ext.isDefaultId
 import com.elife.room.core.ui.composable.AdaptiveDialog
@@ -70,18 +69,34 @@ import org.koin.compose.viewmodel.koinViewModel
  */
 @Composable
 fun EditRoomConfigDialog(
-    onDismissRequest: () -> Unit,
+    roomId: Long,
+    onDismissRequest: (RoomInfo?) -> Unit,
     modifier: Modifier = Modifier,
-    roomId: Int = Int.defaultId,
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     viewModel: EditRoomViewModel = koinViewModel()
 ) {
+    LaunchedEffect(roomId) {
+        viewModel.loadRoomInfo(roomId)
+    }
+
+    val roomInfo = viewModel.roomInfo.collectAsStateWithLifecycle()
+
+    EditRoomConfigDialog(
+        roomInfo = roomInfo.value,
+        onDismissRequest = { onDismissRequest(null) },
+        onConfirmClick = {
+            viewModel.saveRoom(it)
+            onDismissRequest(it)
+        },
+        modifier = modifier,
+        windowInfo = windowInfo
+    )
 }
 
 @Composable
 fun EditRoomConfigDialog(
     templateFileName: String,
-    onDismissRequest: () -> Unit,
+    onDismissRequest: (RoomInfo?) -> Unit,
     modifier: Modifier = Modifier,
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     viewModel: EditRoomViewModel = koinViewModel()
@@ -94,8 +109,11 @@ fun EditRoomConfigDialog(
 
     EditRoomConfigDialog(
         roomInfo = roomInfo.value,
-        onDismissRequest = onDismissRequest,
-        onConfirmClick = { },
+        onDismissRequest = { onDismissRequest(null) },
+        onConfirmClick = {
+            viewModel.saveRoom(it)
+            onDismissRequest(it)
+        },
         modifier = modifier,
         windowInfo = windowInfo
     )
@@ -110,11 +128,11 @@ fun EditRoomConfigDialog(
     modifier: Modifier = Modifier,
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
-    val attributesState = remember { mutableStateOf(roomInfo.attributes) }
+    val attributesState = remember { mutableStateOf(roomInfo.attributeInfoList) }
     val showAddAttrDialog = remember { mutableStateOf(false)}
 
-    LaunchedEffect(roomInfo.attributes) {
-        attributesState.value = roomInfo.attributes
+    LaunchedEffect(roomInfo.attributeInfoList) {
+        attributesState.value = roomInfo.attributeInfoList
     }
 
     val switchRowModifier = Modifier.fillMaxWidth().wrapContentHeight()
@@ -136,7 +154,7 @@ fun EditRoomConfigDialog(
                 CommonDialogTitle(
                     title = stringResource(if (roomInfo.id.isDefaultId) Res.string.room_config_add else Res.string.room_config_edit),
                     onCancelClick = onDismissRequest,
-                    onConfirmClick = { onConfirmClick(roomInfo.copy(attributes = attributesState.value)) }
+                    onConfirmClick = { onConfirmClick(roomInfo.copy(attributeInfoList = attributesState.value)) }
                 )
 
                 LazyColumn(

@@ -4,6 +4,8 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import com.elife.room.database.dao.RecordDao
+import com.elife.room.database.dao.RoomAttributeDao
 import com.elife.room.database.dao.RoomDao
 import com.elife.room.database.dao.RoomGroupDao
 import com.elife.room.database.table.Room
@@ -24,6 +26,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun roomDao(): RoomDao
 
     abstract fun roomGroupDao(): RoomGroupDao
+
+    abstract fun roomAttributeDao(): RoomAttributeDao
+
+    abstract fun recordDao(): RecordDao
 }
 
 @Suppress("KotlinNoActualForExpect")

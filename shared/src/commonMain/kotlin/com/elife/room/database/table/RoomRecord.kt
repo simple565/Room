@@ -7,11 +7,12 @@ import androidx.room.PrimaryKey
  * @author Lian
  * @date 2026/2/22
  */
-@Entity(tableName = "room_record")
+@Entity(tableName = "record")
 data class RoomRecord(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val roomId: Int,
-    val attributeId: Int,
+    val id: Long,
+    val roomId: Long,
+    val attributeId: Long,
+    val recordId: Long,
     val value: String
 )

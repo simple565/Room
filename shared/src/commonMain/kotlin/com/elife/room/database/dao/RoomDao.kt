@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(room: Room)
+    suspend fun insert(room: Room): Long
 
     @Delete(entity = Room::class)
     suspend fun delete(room: Room)
@@ -20,6 +20,6 @@ interface RoomDao {
     fun getRoomList(): Flow<List<Room>>
 
     @Query("SELECT * FROM room WHERE id = :id")
-    suspend fun getRoom(id: Int): Room?
+    suspend fun getRoom(id: Long): Room?
 
 }

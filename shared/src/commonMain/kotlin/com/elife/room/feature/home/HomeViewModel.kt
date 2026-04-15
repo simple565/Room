@@ -27,7 +27,7 @@ class HomeViewModel(repository: RoomRepository) : ViewModel() {
     val groupTabsState = combine(_selectedTabIndex, repository.getRoomGroupListFlow()) { index, groupList ->
         RoomTabState(
             selectedIndex = index,
-            groupList = groupList.ifEmpty { listOf(RoomGroup(id = Int.defaultId, "全部")) }
+            groupList = groupList.ifEmpty { listOf(RoomGroup(id = Long.defaultId, "全部")) }
         )
     }.flowOn(Dispatchers.IO)
         .stateIn(

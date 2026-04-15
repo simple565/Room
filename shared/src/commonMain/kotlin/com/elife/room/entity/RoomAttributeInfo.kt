@@ -1,16 +1,17 @@
 package com.elife.room.entity
 
+import com.elife.room.core.ext.defaultId
 import kotlinx.serialization.Serializable
 
 /**
- * 房间属性
+ * 房间 属性
  * @author lianml
  * @date 2025/11/27
  */
 @Serializable(with = RoomAttributeInfoSerializer::class)
 interface RoomAttributeInfo {
     val type: String
-    val id: Int
+    val id: Long
     val name: String
     val description: String
     val required: Boolean
@@ -20,8 +21,8 @@ interface RoomAttributeInfo {
 
 @Serializable
 data class TextRoomAttributeInfo(
-    override val type: String = RoomAttributeType.TEXT.name,
-    override val id: Int = 0,
+    override val type: String = RoomAttributeType.TEXT.type,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -31,8 +32,8 @@ data class TextRoomAttributeInfo(
 
 @Serializable
 data class ImageRoomAttributeInfo(
-    override val type: String = RoomAttributeType.IMAGE.name,
-    override val id: Int = 0,
+    override val type: String = RoomAttributeType.IMAGE.type,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -43,7 +44,7 @@ data class ImageRoomAttributeInfo(
 @Serializable
 data class NumberRoomAttributeInfo(
     override val type: String = RoomAttributeType.NUMBER.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -61,7 +62,7 @@ data class NumberRoomAttributeInfo(
 @Serializable
 data class SwitchRoomAttributeInfo(
     override val type: String = RoomAttributeType.SWITCH.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -72,7 +73,7 @@ data class SwitchRoomAttributeInfo(
 @Serializable
 data class SelectRoomAttributeInfo(
     override val type: String = RoomAttributeType.SELECT.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -84,7 +85,7 @@ data class SelectRoomAttributeInfo(
 @Serializable
 data class MultiSelectRoomAttributeInfo(
     override val type: String = RoomAttributeType.MULTI_SELECT.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -96,7 +97,7 @@ data class MultiSelectRoomAttributeInfo(
 @Serializable
 data class DatetimeRoomAttributeInfo(
     override val type: String = RoomAttributeType.DATETIME.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -108,7 +109,7 @@ data class DatetimeRoomAttributeInfo(
 @Serializable
 data class DurationRoomAttributeInfo(
     override val type: String = RoomAttributeType.DURATION.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -121,7 +122,7 @@ data class DurationRoomAttributeInfo(
 @Serializable
 data class RatingRoomAttributeInfo(
     override val type: String = RoomAttributeType.RATING.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,
@@ -133,7 +134,7 @@ data class RatingRoomAttributeInfo(
 @Serializable
 data class LongTextRoomAttributeInfo(
     override val type: String = RoomAttributeType.LONG_TEXT.type,
-    override val id: Int = 0,
+    override val id: Long = Long.defaultId,
     override val name: String,
     override val description: String,
     override val required: Boolean,

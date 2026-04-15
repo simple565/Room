@@ -11,6 +11,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "room_group", indices = [Index(value = ["name"], unique = true)])
 data class RoomGroup(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     val name: String,
 )

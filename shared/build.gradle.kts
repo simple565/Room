@@ -59,6 +59,7 @@ kotlin {
             implementation(libs.jetbrains.lifecycle.viewmodel.compose)
 
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.datatime)
             implementation(libs.kotlinx.serialization.json)
 
             api(libs.koin.core)

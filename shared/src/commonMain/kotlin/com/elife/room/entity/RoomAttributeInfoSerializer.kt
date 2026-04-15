@@ -3,15 +3,14 @@ package com.elife.room.entity
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 @OptIn(ExperimentalSerializationApi::class)
-@Serializer(forClass = RoomAttributeInfo::class)
 class RoomAttributeInfoSerializer : KSerializer<RoomAttributeInfo> {
 
     override val descriptor: SerialDescriptor
@@ -21,21 +20,37 @@ class RoomAttributeInfoSerializer : KSerializer<RoomAttributeInfo> {
         val jsonDecoder = decoder as? JsonDecoder ?: throw SerializationException("Expected JsonDecoder")
         val element = jsonDecoder.decodeJsonElement()
         val jsonObject = element.jsonObject
+        val json = jsonDecoder.json
 
         val typeString = jsonObject["type"]?.jsonPrimitive?.content ?: throw SerializationException("Missing type field")
-        val type = RoomAttributeType.entries.find { it.type == typeString } ?: throw SerializationException("Unknown type: $typeString")
-        
+        val type = RoomAttributeType.entries.find { it.type.equals(typeString, true) } ?: throw SerializationException("Unknown type: $typeString")
+
         return when (type) {
-            RoomAttributeType.TEXT -> jsonDecoder.json.decodeFromJsonElement(TextRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.IMAGE -> jsonDecoder.json.decodeFromJsonElement(ImageRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.NUMBER -> jsonDecoder.json.decodeFromJsonElement(NumberRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.SWITCH -> jsonDecoder.json.decodeFromJsonElement(SwitchRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.SELECT -> jsonDecoder.json.decodeFromJsonElement(SelectRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.MULTI_SELECT -> jsonDecoder.json.decodeFromJsonElement(MultiSelectRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.DATETIME -> jsonDecoder.json.decodeFromJsonElement(DatetimeRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.DURATION -> jsonDecoder.json.decodeFromJsonElement(DurationRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.RATING -> jsonDecoder.json.decodeFromJsonElement(RatingRoomAttributeInfo.serializer(), element)
-            RoomAttributeType.LONG_TEXT -> jsonDecoder.json.decodeFromJsonElement(LongTextRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.TEXT -> json.decodeFromJsonElement(TextRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.IMAGE -> json.decodeFromJsonElement(ImageRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.NUMBER -> json.decodeFromJsonElement(NumberRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.SWITCH -> json.decodeFromJsonElement(SwitchRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.SELECT -> json.decodeFromJsonElement(SelectRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.MULTI_SELECT -> json.decodeFromJsonElement(MultiSelectRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.DATETIME -> json.decodeFromJsonElement(DatetimeRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.DURATION -> json.decodeFromJsonElement(DurationRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.RATING -> json.decodeFromJsonElement(RatingRoomAttributeInfo.serializer(), element)
+            RoomAttributeType.LONG_TEXT -> json.decodeFromJsonElement(LongTextRoomAttributeInfo.serializer(), element)
+        }
+    }
+
+    override fun serialize(encoder: Encoder, value: RoomAttributeInfo) {
+        when (value) {
+            is TextRoomAttributeInfo -> TextRoomAttributeInfo.serializer().serialize(encoder, value)
+            is ImageRoomAttributeInfo -> ImageRoomAttributeInfo.serializer().serialize(encoder, value)
+            is NumberRoomAttributeInfo -> NumberRoomAttributeInfo.serializer().serialize(encoder, value)
+            is SwitchRoomAttributeInfo -> SwitchRoomAttributeInfo.serializer().serialize(encoder, value)
+            is SelectRoomAttributeInfo -> SelectRoomAttributeInfo.serializer().serialize(encoder, value)
+            is MultiSelectRoomAttributeInfo -> MultiSelectRoomAttributeInfo.serializer().serialize(encoder, value)
+            is DatetimeRoomAttributeInfo -> DatetimeRoomAttributeInfo.serializer().serialize(encoder, value)
+            is DurationRoomAttributeInfo -> DurationRoomAttributeInfo.serializer().serialize(encoder, value)
+            is RatingRoomAttributeInfo -> RatingRoomAttributeInfo.serializer().serialize(encoder, value)
+            is LongTextRoomAttributeInfo -> LongTextRoomAttributeInfo.serializer().serialize(encoder, value)
         }
     }
 }

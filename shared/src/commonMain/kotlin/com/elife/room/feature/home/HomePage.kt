@@ -18,9 +18,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AddCircleOutline
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -63,7 +61,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomePage(
-    onDetailClick: (Int) -> Unit,
+    onDetailClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     viewModel: HomeViewModel = koinViewModel()
@@ -89,21 +87,10 @@ fun HomePage(
                         onClick = { showAddRoomDialog.value = true },
                         content = {
                             Icon(
-                                imageVector = Icons.Rounded.AddCircleOutline,
+                                imageVector = Icons.Rounded.Add,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(MaterialTheme.iconSize.small)
-                            )
-                        }
-                    )
-                    IconButton(
-                        onClick = { showListDisplayConfigDialog.value = true },
-                        content = {
-                            Icon(
-                                imageVector = Icons.Outlined.Settings,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(MaterialTheme.iconSize.small)
+                                modifier = Modifier.size(MaterialTheme.iconSize.medium)
                             )
                         }
                     )
@@ -112,7 +99,10 @@ fun HomePage(
             )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+        ) {
             RoomGroupTabRow(
                 selectedIndex = roomGroupTabState.selectedIndex,
                 groupList = roomGroupTabState.groupList,
@@ -122,7 +112,8 @@ fun HomePage(
             RoomBriefInfoGrid(
                 shelfBriefList = roomList.roomList,
                 modifier = Modifier.fillMaxSize(),
-                onClick = { onDetailClick(it.id) }
+                onItemClick = { onDetailClick(it.id) },
+                onItemLongClick = { showEditRoomDialog.value = it }
             )
         }
     }
@@ -202,7 +193,8 @@ private fun RoomGroupTabRow(
 @Composable
 private fun RoomBriefInfoGrid(
     shelfBriefList: List<RoomBriefInfo>,
-    onClick: (RoomBriefInfo) -> Unit,
+    onItemClick: (RoomBriefInfo) -> Unit,
+    onItemLongClick: (RoomBriefInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val cardModifier = Modifier.aspectRatio(3.div(2F))
@@ -218,8 +210,8 @@ private fun RoomBriefInfoGrid(
                 briefInfo = it, modifier = cardModifier.combinedClickable(
                     indication = null,
                     interactionSource = null,
-                    onClick = { onClick(it) },
-                    onLongClick = {}
+                    onClick = { onItemClick(it) },
+                    onLongClick = { onItemLongClick(it) }
                 )
             )
         }
@@ -230,7 +222,7 @@ private fun RoomBriefInfoGrid(
 private fun RoomBriefInfoCard(briefInfo: RoomBriefInfo, modifier: Modifier = Modifier) {
     ElevatedCard(modifier = modifier) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(MaterialTheme.spacing.small),
+            modifier = Modifier.fillMaxSize().padding(MaterialTheme.spacing.medium),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -255,6 +247,7 @@ private fun RoomBriefInfoCard(briefInfo: RoomBriefInfo, modifier: Modifier = Mod
                 )
                 IconButton(
                     onClick = {},
+                    modifier = Modifier.size(MaterialTheme.iconSize.medium),
                     content = {
                         Icon(
                             imageVector = Icons.Rounded.Add,
@@ -298,7 +291,12 @@ private fun RoomGridPreview() {
     val list = listOf(roomBriefInfo, roomBriefInfo.copy(id = 2), roomBriefInfo.copy(id = 3))
     AppTheme {
         Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
-            RoomBriefInfoGrid(modifier = Modifier, shelfBriefList = list, onClick = {})
+            RoomBriefInfoGrid(
+                modifier = Modifier,
+                shelfBriefList = list,
+                onItemClick = {},
+                onItemLongClick = {}
+            )
         }
     }
 }

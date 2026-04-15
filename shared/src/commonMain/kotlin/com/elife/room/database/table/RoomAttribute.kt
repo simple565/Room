@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "room_attribute")
 data class RoomAttribute(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val roomId: Int,
+    val id: Long,
+    val roomId: Long,
     val type: String,
     val configJson: String,
     val sortOrder: Int,

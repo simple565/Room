@@ -39,7 +39,7 @@ object IndexRoute : NavKey
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IndexPage(
-    onDetailClick: (Int) -> Unit = {},
+    onDetailClick: (Long) -> Unit = {},
     modifier: Modifier = Modifier,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
