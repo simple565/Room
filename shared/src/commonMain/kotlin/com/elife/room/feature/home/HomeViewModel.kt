@@ -53,9 +53,6 @@ class HomeViewModel(repository: RoomRepository) : ViewModel() {
         _selectedTabIndex.value = index
     }
 
-    fun updateRoomListDisplayConfig(columnCount: Int) {
-        _roomListDisplayColumnCount.value = columnCount
-    }
 }
 
 data class RoomTabState(

@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Room</string>
 
+    <string name="back">返回</string>
     <string name="cancel">取消</string>
     <string name="done">完成</string>
     <string name="new">新建</string>
@@ -40,5 +41,12 @@
     <string name="room_config_add_attribute">添加属性</string>
 
     <string name="group">分组</string>
+
+    <string name="record">记录</string>
+    <string name="record_add">添加记录</string>
+    <string name="record_empty">暂无数据</string>
+    <string name="record_click_to_add">点击右下角添加按钮添加记录</string>
+    <string name="record_list">列表</string>
+    <string name="record_statistics">统计</string>
 
 </resources>

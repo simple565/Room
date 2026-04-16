@@ -9,7 +9,6 @@ import com.elife.room.feature.detail.RoomDetailViewModel
 import com.elife.room.feature.home.EditRoomViewModel
 import com.elife.room.feature.home.HomeViewModel
 import com.elife.room.feature.record.RecordEditViewModel
-import com.elife.room.feature.stats.RoomStatsViewModel
 import com.elife.room.repository.RecordRepository
 import com.elife.room.repository.RoomRepository
 import org.koin.core.context.startKoin
@@ -40,7 +39,6 @@ fun commonModule() = module {
     viewModel { EditRoomViewModel(repository = get()) }
     viewModel { RoomDetailViewModel(repository = get(), recordRepository = get()) }
     viewModel { RecordEditViewModel(recordRepository = get()) }
-    viewModel { RoomStatsViewModel(recordRepository = get()) }
 }
 
 expect fun platformModule(): Module

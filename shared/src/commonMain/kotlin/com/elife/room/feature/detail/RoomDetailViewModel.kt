@@ -2,7 +2,6 @@ package com.elife.room.feature.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elife.room.entity.RecordInfo
 import com.elife.room.repository.RecordRepository
 import com.elife.room.repository.RoomRepository
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +27,8 @@ class RoomDetailViewModel(
 ) : ViewModel() {
 
     private val _loadRoomIdState = MutableStateFlow<Long>(0L)
+    private val _selectedTab = MutableStateFlow(RoomDetailTab.RECORDS)
+    val selectedTab: StateFlow<RoomDetailTab> = _selectedTab.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val room = _loadRoomIdState.mapLatest { repository.getRoomInfo(it) }
@@ -38,9 +39,8 @@ class RoomDetailViewModel(
             started = SharingStarted.WhileSubscribed()
         )
 
-    // 记录列表
-    val recordEntries: StateFlow<List<RecordInfo>> = _loadRoomIdState
-        .mapLatest { roomId ->
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val recordList = _loadRoomIdState.mapLatest { roomId ->
             if (roomId > 0L) {
                 recordRepository.getRecordEntriesByRoomId(roomId)
                     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -55,10 +55,6 @@ class RoomDetailViewModel(
             initialValue = emptyList(),
             started = SharingStarted.WhileSubscribed()
         )
-
-    // 当前选中的 Tab（记录列表/统计）
-    private val _selectedTab = MutableStateFlow(RoomDetailTab.RECORDS)
-    val selectedTab: StateFlow<RoomDetailTab> = _selectedTab.asStateFlow()
 
     fun loadRoom(id: Long) {
         _loadRoomIdState.value = id
@@ -82,6 +78,13 @@ class RoomDetailViewModel(
  * Room 详情页 Tab 类型
  */
 enum class RoomDetailTab {
-    RECORDS,    // 记录列表
-    STATS       // 统计页面
+    /**
+     * 记录列表
+     */
+    RECORDS,
+
+    /**
+     * 统计
+     */
+    STATS
 }

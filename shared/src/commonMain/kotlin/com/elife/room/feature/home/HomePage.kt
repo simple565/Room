@@ -3,6 +3,7 @@ package com.elife.room.feature.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
@@ -40,8 +40,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.elife.room.core.ui.composable.RoomTopAppBar
 import com.elife.room.core.ui.theme.AppTheme
 import com.elife.room.core.ui.theme.iconSize
 import com.elife.room.core.ui.theme.spacing
@@ -69,19 +72,13 @@ fun HomePage(
     val roomGroupTabState by viewModel.groupTabsState.collectAsStateWithLifecycle()
     val roomList by viewModel.briefListFlow.collectAsStateWithLifecycle()
     val showAddRoomDialog = remember { mutableStateOf(false) }
-    val showEditRoomDialog = remember { mutableStateOf<RoomBriefInfo?> (null) }
-    val showListDisplayConfigDialog = remember { mutableStateOf(false) }
+    val showRoomMoreActionDialog = remember { mutableStateOf<RoomBriefInfo?> (null) }
 
     Scaffold(
         modifier = modifier.then(Modifier.fillMaxSize().systemBarsPadding()),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(Res.string.app_name),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                },
+            RoomTopAppBar(
+                title = stringResource(Res.string.app_name),
                 actions = {
                     IconButton(
                         onClick = { showAddRoomDialog.value = true },
@@ -94,8 +91,7 @@ fun HomePage(
                             )
                         }
                     )
-                },
-                expandedHeight = 54.dp
+                }
             )
         }
     ) { paddingValues ->
@@ -113,7 +109,7 @@ fun HomePage(
                 shelfBriefList = roomList.roomList,
                 modifier = Modifier.fillMaxSize(),
                 onItemClick = { onDetailClick(it.id) },
-                onItemLongClick = { showEditRoomDialog.value = it }
+                onItemLongClick = { showRoomMoreActionDialog.value = it }
             )
         }
     }
@@ -125,18 +121,11 @@ fun HomePage(
         )
     }
 
-    if (null != showEditRoomDialog.value) {
+    showRoomMoreActionDialog.value?.also {
         EditRoomConfigDialog(
-            roomId = showEditRoomDialog.value!!.id,
-            onDismissRequest = { showEditRoomDialog.value = null },
+            roomId = it.id,
+            onDismissRequest = { showRoomMoreActionDialog.value = null },
             windowInfo = windowInfo
-        )
-    }
-
-    if (showListDisplayConfigDialog.value) {
-        RoomListDisplayConfigDialog(
-            onDismissRequest = { showListDisplayConfigDialog.value = false },
-            onColumnValueChange = viewModel::updateRoomListDisplayConfig
         )
     }
 }
@@ -198,6 +187,8 @@ private fun RoomBriefInfoGrid(
     modifier: Modifier = Modifier
 ) {
     val cardModifier = Modifier.aspectRatio(3.div(2F))
+    val haptics = LocalHapticFeedback.current
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 120.dp),
         modifier = modifier,
@@ -206,14 +197,19 @@ private fun RoomBriefInfoGrid(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {
         items(items = shelfBriefList, key = { it.id }) {
-            RoomBriefInfoCard(
-                briefInfo = it, modifier = cardModifier.combinedClickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = { onItemClick(it) },
-                    onLongClick = { onItemLongClick(it) }
+            Box(modifier = cardModifier) {
+                RoomBriefInfoCard(
+                    briefInfo = it, modifier = cardModifier.combinedClickable(
+                        indication = null,
+                        interactionSource = null,
+                        onClick = { onItemClick(it) },
+                        onLongClick = {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onItemLongClick(it)
+                        }
+                    )
                 )
-            )
+            }
         }
     }
 }
