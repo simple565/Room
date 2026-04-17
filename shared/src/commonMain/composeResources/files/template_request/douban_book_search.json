@@ -1,0 +1,62 @@
+{
+  "name": "豆瓣图书搜索",
+  "description": "用于搜索豆瓣图书",
+  "request": {
+    "url": "https://api.douban.com/v2/book/search",
+    "method": "POST",
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/x-www-form-urlencoded",
+        "enabled": true
+      }
+    ],
+    "params": [
+      {
+        "key": "apikey",
+        "value": "0ab215a8b1977939201640fa14c66bab",
+        "enabled": true,
+        "isQuery": false,
+        "isDynamic": false,
+        "dynamicKey": ""
+      },
+      {
+        "key": "q",
+        "value": "",
+        "enabled": true,
+        "isQuery": false,
+        "isDynamic": true,
+        "dynamicKey": "q"
+      },
+      {
+        "key": "start",
+        "value": "0",
+        "enabled": true,
+        "isQuery": false,
+        "isDynamic": false,
+        "dynamicKey": ""
+      },
+      {
+        "key": "count",
+        "value": "10",
+        "enabled": true,
+        "isQuery": false,
+        "isDynamic": false,
+        "dynamicKey": ""
+      }
+    ],
+    "body": {
+      "type": "form",
+      "content": ""
+    }
+  },
+  "response": {
+    "parser": "default",
+    "mapping": {
+      "title": "$.books[*].title",
+      "description": "$.books[*].summary",
+      "image": "$.books[*].images.medium",
+      "id": "$.books[*].id"
+    }
+  }
+}

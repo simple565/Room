@@ -6,6 +6,8 @@
     <string name="done">完成</string>
     <string name="new">新建</string>
     <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="confirm">确定</string>
     <string name="required_mark">*</string>
 
     <string name="layout_type">布局方式</string>
@@ -38,6 +40,8 @@
     <string name="room_config_show_calendar">展示日历</string>
     <string name="room_config_title_attribute">属性</string>
     <string name="room_config_add_attribute">添加属性</string>
+    <string name="room_config_delete_attribute">删除属性</string>
+    <string name="room_config_delete_attribute_confirm_prompt">确定要删除这个属性吗？</string>
 
     <string name="group">分组</string>
 

@@ -14,6 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview(device = Devices.TABLET)
 annotation class DevicePreview
 
-@Preview(uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
-@Preview(uiMode = AndroidUiModes.UI_MODE_NIGHT_NO)
+@Preview(uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(uiMode = AndroidUiModes.UI_MODE_NIGHT_NO, showBackground = true)
 annotation class UiModePreview

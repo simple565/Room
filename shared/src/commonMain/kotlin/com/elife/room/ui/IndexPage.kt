@@ -39,11 +39,13 @@ object IndexRoute : NavKey
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IndexPage(
-    onDetailClick: (Long) -> Unit = {},
     modifier: Modifier = Modifier,
+    onDetailClick: (Long) -> Unit = {},
+    onNavigateToTarget: (NavKey) -> Unit,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
     var selectedItem by rememberSaveable { mutableStateOf(0) }
+
     val navigationItemList = listOf(
         NavigationItem(label = stringResource(Res.string.nav_home), icon = Icons.Rounded.Home),
         NavigationItem(label = stringResource(Res.string.nav_log), icon = Icons.AutoMirrored.Filled.ListAlt),
@@ -71,8 +73,9 @@ fun IndexPage(
                 modifier = Modifier.fillMaxSize()
             )
 
-            1 -> SettingsPage(
-                modifier = Modifier.fillMaxSize()
+            2 -> SettingsPage(
+                modifier = Modifier.fillMaxSize(),
+                onNavigateToTarget = onNavigateToTarget
             )
         }
     }
