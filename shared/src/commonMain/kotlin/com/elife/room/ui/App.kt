@@ -11,6 +11,8 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.elife.room.core.ui.theme.AppTheme
 import com.elife.room.feature.detail.RoomDetailPage
 import com.elife.room.feature.detail.RoomDetailRoute
+import com.elife.room.feature.search.SearchPlugManagerRoute
+import com.elife.room.feature.search.SearchPluginManagerPage
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
@@ -34,7 +36,8 @@ fun App() {
             entryProvider = entryProvider {
                 entry<IndexRoute> {
                     IndexPage(
-                        onDetailClick = { topLevelBackStack.add(RoomDetailRoute(it))},
+                        onDetailClick = { topLevelBackStack.add(RoomDetailRoute(it)) },
+                        onNavigateToTarget = { topLevelBackStack.add(it) },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -44,6 +47,10 @@ fun App() {
                         onBackClick = { topLevelBackStack.removeLastOrNull()},
                         modifier = Modifier.fillMaxSize()
                     )
+                }
+
+                entry<SearchPlugManagerRoute> {
+                    SearchPluginManagerPage()
                 }
             }
         )

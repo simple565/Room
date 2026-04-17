@@ -8,14 +8,16 @@ import com.elife.room.database.dao.RecordDao
 import com.elife.room.database.dao.RoomAttributeDao
 import com.elife.room.database.dao.RoomDao
 import com.elife.room.database.dao.RoomGroupDao
+import com.elife.room.database.dao.SearchPluginDao
 import com.elife.room.database.table.Room
 import com.elife.room.database.table.RoomAttribute
 import com.elife.room.database.table.RoomGroup
 import com.elife.room.database.table.RoomRecord
+import com.elife.room.database.table.SearchPlugin
 
 @ConstructedBy(AppDatabaseConstructor::class)
 @Database(
-    entities = [Room::class, RoomAttribute::class, RoomGroup::class, RoomRecord::class],
+    entities = [Room::class, RoomAttribute::class, RoomGroup::class, RoomRecord::class, SearchPlugin::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -30,6 +32,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun roomAttributeDao(): RoomAttributeDao
 
     abstract fun recordDao(): RecordDao
+
+    abstract fun searchPluginDao(): SearchPluginDao
 }
 
 @Suppress("KotlinNoActualForExpect")
