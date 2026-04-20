@@ -1,34 +1,54 @@
 {
-  "name": "微信读书搜索",
+  "name": "微信读书",
   "description": "用于搜索微信读书中的书籍",
-  "type": "book",
-  "request": {
-    "url": "https://weread.qq.com/web/search/global",
-    "method": "GET",
-    "headers": [],
-    "params": [
-      {
-        "key": "keyword",
-        "value": "",
-        "isDynamic": true
-      },
-      {
-        "key": "count",
-        "value": "",
-        "isDynamic": true
-      }
-    ],
-    "body": {
-      "type": "json",
-      "content": "{}"
+  "url": "https://weread.qq.com/web/search/global",
+  "method": "GET",
+  "headers": [],
+  "params": [
+    {
+      "key": "keyword",
+      "value": "",
+      "isDynamic": true
+    },
+    {
+      "key": "count",
+      "value": "20",
+      "isDynamic": false
     }
-  },
-  "response": {
-    "mapping": {
-      "title": "$.books[*].title",
+  ],
+  "body": [],
+  "itemRegex": "\\\"bookInfo\\\"\\\\s*:\\\\s*\\\\{([^}]+(?:\\\\{[^}]*\\\\}[^}]*)*)\\\\}",
+  "mapping": [
+    {
+      "name": "封面",
+      "regex": "cover",
+      "value": ""
+    },
+    {
+      "name": "id",
+      "regex": "bookId",
+      "value": ""
+    },
+    {
+      "name": "名称",
+      "regex": "title",
+      "value": ""
+    },
+    {
+      "name": "作者",
+      "regex": "author",
+      "value": ""
+    },
+    {
+      "name": "简介",
+      "regex": "intro",
+      "value": ""
+    },
+    {
+      "name": "$.books[*].title",
       "description": "$.books[*].intro",
       "image": "$.books[*].cover",
       "id": "$.books[*].bookId"
     }
-  }
+  ]
 }

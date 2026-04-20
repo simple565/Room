@@ -15,14 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.elife.room.core.ui.composable.AdaptiveDialog
 import com.elife.room.core.ui.composable.CommonDialogTitle
-import com.elife.room.database.table.SearchPlugin
+import com.elife.room.entity.SearchPluginInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditPluginDialog(
-    plugin: SearchPlugin? = null,
+    plugin: SearchPluginInfo? = null,
     onDismiss: () -> Unit,
-    onSave: (SearchPlugin) -> Unit
+    onSave: (SearchPluginInfo) -> Unit
 ) {
     var name by remember { mutableStateOf(plugin?.name ?: "") }
     var baseUrl by remember { mutableStateOf(plugin?.url ?: "") }
@@ -35,15 +35,11 @@ fun AddEditPluginDialog(
                     title = if (plugin == null) "添加搜索插件" else "编辑搜索插件",
                     onCancelClick = onDismiss,
                     onConfirmClick = {
-                        val newPlugin = SearchPlugin(
+                        val newPlugin = SearchPluginInfo(
                             id = plugin?.id ?: 0,
                             name = name,
                             url = baseUrl,
-                            description = "",
-                            heads = "",
-                            params = "",
-                            body = "",
-                            mapping = "",
+                            mapping = emptyList()
                         )
                         onSave(newPlugin)
                     }

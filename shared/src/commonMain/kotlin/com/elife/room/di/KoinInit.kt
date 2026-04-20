@@ -9,9 +9,9 @@ import com.elife.room.database.dao.SearchPluginDao
 import com.elife.room.feature.detail.RoomDetailViewModel
 import com.elife.room.feature.home.EditRoomViewModel
 import com.elife.room.feature.home.HomeViewModel
+import com.elife.room.feature.record.RecordEditViewModel
 import com.elife.room.feature.search.PluginSearchViewModel
 import com.elife.room.feature.search.SearchPluginManagerViewModel
-import com.elife.room.feature.record.RecordEditViewModel
 import com.elife.room.repository.RecordRepository
 import com.elife.room.repository.RoomRepository
 import com.elife.room.repository.SearchPluginRepository
@@ -39,15 +39,12 @@ fun commonModule() = module {
 
     factory<RoomRepository> { RoomRepository() }
     factory<SearchPluginRepository> { SearchPluginRepository() }
-//    factory<RecordRepository> { RecordRepository() }
+    factory<RecordRepository> { RecordRepository() }
 
     viewModel { HomeViewModel(repository = get()) }
     viewModel { EditRoomViewModel(repository = get()) }
     viewModel { RoomDetailViewModel(repository = get(), recordRepository = get()) }
     viewModel { RecordEditViewModel(recordRepository = get()) }
-    viewModel { RoomDetailViewModel(repository = get()/*, recordRepository = get()*/) }
-//    viewModel { RecordEditViewModel(recordRepository = get()) }
-//    viewModel { RoomStatsViewModel(recordRepository = get()) }
     viewModel { SearchPluginManagerViewModel(repository = get()) }
     viewModel { PluginSearchViewModel(repository = get()) }
 }

@@ -3,7 +3,6 @@ package com.elife.room.feature.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -186,7 +185,6 @@ private fun RoomBriefInfoGrid(
     onItemLongClick: (RoomBriefInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val cardModifier = Modifier.aspectRatio(3.div(2F))
     val haptics = LocalHapticFeedback.current
 
     LazyVerticalGrid(
@@ -197,9 +195,9 @@ private fun RoomBriefInfoGrid(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {
         items(items = shelfBriefList, key = { it.id }) {
-            Box(modifier = cardModifier) {
-                RoomBriefInfoCard(
-                    briefInfo = it, modifier = cardModifier.combinedClickable(
+            RoomBriefInfoCard(
+                    briefInfo = it,
+                    modifier = Modifier.aspectRatio(3.div(2F)).combinedClickable(
                         indication = null,
                         interactionSource = null,
                         onClick = { onItemClick(it) },
@@ -209,7 +207,6 @@ private fun RoomBriefInfoGrid(
                         }
                     )
                 )
-            }
         }
     }
 }

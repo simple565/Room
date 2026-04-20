@@ -36,7 +36,7 @@ fun AdaptiveDialog(
             modifier = Modifier,
             sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             sheetGesturesEnabled = false,
-            shape = MaterialTheme.shapes.medium.copy(
+            shape = MaterialTheme.shapes.large.copy(
                 bottomStart = ZeroCornerSize,
                 bottomEnd = ZeroCornerSize
             ),

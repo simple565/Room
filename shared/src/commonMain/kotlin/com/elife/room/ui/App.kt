@@ -50,7 +50,9 @@ fun App() {
                 }
 
                 entry<SearchPlugManagerRoute> {
-                    SearchPluginManagerPage()
+                    SearchPluginManagerPage(
+                        onBackClick = { topLevelBackStack.removeLastOrNull()},
+                    )
                 }
             }
         )

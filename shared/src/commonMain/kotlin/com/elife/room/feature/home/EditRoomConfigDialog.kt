@@ -318,6 +318,7 @@ private fun CustomAttributeRow(
                 Icon(
                     imageVector = Icons.Rounded.RemoveCircle,
                     contentDescription = null,
+                    modifier = Modifier.size(MaterialTheme.iconSize.medium),
                     tint = MaterialTheme.colorScheme.error
                 )
             }

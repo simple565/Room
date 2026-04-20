@@ -9,9 +9,12 @@ data class SearchPlugin(
     val id: Long,
     val name: String,
     val description: String,
+    val requestMethod: String,
     val url: String,
     val heads: String,
     val params: String,
     val body: String,
-    val mapping: String
+    val itemRegex: String,
+    val mapping: String,
+    val enable: Boolean
 )

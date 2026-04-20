@@ -53,4 +53,9 @@
     <string name="record_list">列表</string>
     <string name="record_statistics">统计</string>
 
+    <string name="settings_group_funtion">功能</string>
+    <string name="settings_item_search_plugin_manager">搜索插件管理</string>
+    <string name="settings_item_search_plugin_manager_description">管理图书、电影等搜索插件</string>
+    <string name="search_plugin_empty">暂无搜索插件</string>
+
 </resources>
