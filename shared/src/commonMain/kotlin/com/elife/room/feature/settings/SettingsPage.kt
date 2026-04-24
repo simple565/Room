@@ -54,7 +54,7 @@ fun SettingsPage(
     ) {
         val itemModifier = Modifier.fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = MaterialTheme.shapes.medium
             )
             .clip(shape = MaterialTheme.shapes.medium)
@@ -120,7 +120,7 @@ private fun RouteSettingCard(
 private fun RouteSettingCardPreview() {
     AppTheme {
         LazyColumn(
-            modifier = Modifier.padding(MaterialTheme.spacing.medium)
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.background).padding(MaterialTheme.spacing.medium)
         ) {
             item {
                 RouteSettingCard(
@@ -129,9 +129,9 @@ private fun RouteSettingCardPreview() {
                     description = stringResource(Res.string.settings_item_search_plugin_manager_description),
                     onClick = {},
                     modifier = Modifier.fillMaxWidth().background(
-                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
                         shape = MaterialTheme.shapes.medium
-                    ).padding(MaterialTheme.spacing.medium)
+                    )
                 )
             }
         }

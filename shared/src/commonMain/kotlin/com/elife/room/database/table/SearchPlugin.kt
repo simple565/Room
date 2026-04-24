@@ -11,7 +11,7 @@ data class SearchPlugin(
     val description: String,
     val requestMethod: String,
     val url: String,
-    val heads: String,
+    val headers: String,
     val params: String,
     val body: String,
     val itemRegex: String,

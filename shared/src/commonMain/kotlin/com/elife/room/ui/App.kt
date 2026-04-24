@@ -21,6 +21,7 @@ private val config = SavedStateConfiguration {
         polymorphic(NavKey::class) {
             subclass(IndexRoute::class, IndexRoute.serializer())
             subclass(RoomDetailRoute::class, RoomDetailRoute.serializer())
+            subclass(SearchPlugManagerRoute::class, SearchPlugManagerRoute.serializer())
         }
     }
 }

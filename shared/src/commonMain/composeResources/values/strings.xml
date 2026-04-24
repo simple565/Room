@@ -4,11 +4,14 @@
 
     <string name="back">返回</string>
     <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="delete">删除</string>
     <string name="done">完成</string>
+    <string name="edit">编辑</string>
     <string name="new">新建</string>
     <string name="save">保存</string>
-    <string name="delete">删除</string>
-    <string name="confirm">确定</string>
+    <string name="search">搜索</string>
+    <string name="verify">校验</string>
     <string name="required_mark">*</string>
 
     <string name="layout_type">布局方式</string>
@@ -57,5 +60,8 @@
     <string name="settings_item_search_plugin_manager">搜索插件管理</string>
     <string name="settings_item_search_plugin_manager_description">管理图书、电影等搜索插件</string>
     <string name="search_plugin_empty">暂无搜索插件</string>
+    <string name="search_plugin_load_preset">加载预置插件</string>
+    <string name="search_plugin_preset_loading">加载预置插件中，请稍候……</string>
+    <string name="search_plugin_check">检测</string>
 
 </resources>

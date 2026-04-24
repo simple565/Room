@@ -1,7 +1,6 @@
 package com.elife.room.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,8 +12,11 @@ interface SearchPluginDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(plugin: SearchPlugin)
 
-    @Delete(entity = SearchPlugin::class)
-    suspend fun delete(plugin: SearchPlugin)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(plugins: List<SearchPlugin>)
+
+    @Query("DELETE FROM search_plugin WHERE id = :id")
+    suspend fun delete(id: Long)
 
     @Query("SELECT * FROM search_plugin")
     fun getPluginList(): Flow<List<SearchPlugin>>

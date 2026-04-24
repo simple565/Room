@@ -1,0 +1,58 @@
+{
+  "name": "豆瓣图书",
+  "description": "用于搜索豆瓣图书中书籍",
+  "url": "https://api.douban.com/v2/book/search",
+  "method": "POST",
+  "headers": {},
+  "params": [],
+  "body": [
+    {
+      "key": "apikey",
+      "value": "0ab215a8b1977939201640fa14c66bab",
+      "isDynamic": false
+    },
+    {
+      "key": "q",
+      "value": "",
+      "isDynamic": true
+    },
+    {
+      "key": "start",
+      "value": "0",
+      "isDynamic": true
+    },
+    {
+      "key": "count",
+      "value": "20",
+      "isDynamic": false
+    }
+  ],
+  "itemRegex": "\\\"books\\\"\\\\s*:\\\\s*\\\\[([^\\\\]]+(?:\\\\[[^\\\\]]*\\\\][^\\\\]]*)*)\\\\]",
+  "mapping": [
+    {
+      "name": "封面",
+      "regex": "images",
+      "value": ""
+    },
+    {
+      "name": "id",
+      "regex": "id",
+      "value": ""
+    },
+    {
+      "name": "名称",
+      "regex": "title",
+      "value": ""
+    },
+    {
+      "name": "作者",
+      "regex": "author",
+      "value": ""
+    },
+    {
+      "name": "简介",
+      "regex": "summary",
+      "value": ""
+    }
+  ]
+}
