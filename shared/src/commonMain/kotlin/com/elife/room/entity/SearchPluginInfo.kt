@@ -14,16 +14,24 @@ data class SearchPluginInfo(
     val id: Long = Long.defaultId,
     val name: String,
     val description: String = "",
-    val requestMethod: String = HttpMethod.Get.value,
+    val method: String = HttpMethod.Get.value,
     val url: String,
-    val heads: Map<String, String> = emptyMap(),
-    val params: Map<String, String> = emptyMap(),
-    val body: Map<String, String> = emptyMap(),
+    val headers: Map<String, String> = emptyMap(),
+    val params: List<SearchParameter> = emptyList(),
+    val body: List<SearchParameter> = emptyList(),
     val itemRegex: String = "",
-    val mapping: List<ResponseMapping>,
+    val mapping: List<ResponseMapping> = emptyList(),
     @Transient
     val enable: Boolean = true
 )
+
+@Serializable
+data class SearchParameter(
+    val key: String,
+    val value: String = "",
+    val isDynamic: Boolean = false
+)
+
 
 @Serializable
 data class ResponseMapping(
