@@ -120,7 +120,7 @@ private fun RouteSettingCard(
 private fun RouteSettingCardPreview() {
     AppTheme {
         LazyColumn(
-            modifier = Modifier.background(color = MaterialTheme.colorScheme.background).padding(MaterialTheme.spacing.medium)
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.surface).padding(MaterialTheme.spacing.medium)
         ) {
             item {
                 RouteSettingCard(

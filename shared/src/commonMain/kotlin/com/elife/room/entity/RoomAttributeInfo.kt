@@ -1,6 +1,11 @@
 package com.elife.room.entity
 
 import com.elife.room.core.ext.defaultId
+import com.elife.room.entity.constants.DatetimeFormat
+import com.elife.room.entity.constants.DurationUnit
+import com.elife.room.entity.constants.NumberFormat
+import com.elife.room.entity.constants.ProgressBarStyle
+import com.elife.room.entity.constants.RoomAttributeType
 import kotlinx.serialization.Serializable
 
 /**
@@ -17,6 +22,8 @@ interface RoomAttributeInfo {
     val required: Boolean
     val defaultValue: String
     val sortOrder: Int
+    
+    fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo
 }
 
 @Serializable
@@ -28,7 +35,11 @@ data class TextRoomAttributeInfo(
     override val required: Boolean,
     override val defaultValue: String,
     override val sortOrder: Int
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class ImageRoomAttributeInfo(
@@ -39,7 +50,11 @@ data class ImageRoomAttributeInfo(
     override val required: Boolean,
     override val defaultValue: String,
     override val sortOrder: Int
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class NumberRoomAttributeInfo(
@@ -57,7 +72,11 @@ data class NumberRoomAttributeInfo(
     val allowDecimal: Boolean = false,
     val decimalPlaces: Int = 0,
     val progressBarStyle: String = ProgressBarStyle.NONE.name
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class SwitchRoomAttributeInfo(
@@ -68,7 +87,11 @@ data class SwitchRoomAttributeInfo(
     override val required: Boolean,
     override val defaultValue: String,
     override val sortOrder: Int
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class SelectRoomAttributeInfo(
@@ -80,7 +103,11 @@ data class SelectRoomAttributeInfo(
     override val defaultValue: String,
     override val sortOrder: Int,
     val options: List<String> = emptyList()
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class MultiSelectRoomAttributeInfo(
@@ -92,7 +119,11 @@ data class MultiSelectRoomAttributeInfo(
     override val defaultValue: String,
     override val sortOrder: Int,
     val options: List<String> = emptyList()
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class DatetimeRoomAttributeInfo(
@@ -104,7 +135,11 @@ data class DatetimeRoomAttributeInfo(
     override val defaultValue: String,
     override val sortOrder: Int,
     val format: String = DatetimeFormat.FULL.format
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class DurationRoomAttributeInfo(
@@ -117,7 +152,11 @@ data class DurationRoomAttributeInfo(
     override val sortOrder: Int,
     val minValue: Int = 0,
     val supportedUnits: List<String> = listOf(DurationUnit.HOUR.name)
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class RatingRoomAttributeInfo(
@@ -129,7 +168,11 @@ data class RatingRoomAttributeInfo(
     override val defaultValue: String,
     override val sortOrder: Int,
     val maxValue: Int = 5
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
 
 @Serializable
 data class LongTextRoomAttributeInfo(
@@ -140,4 +183,8 @@ data class LongTextRoomAttributeInfo(
     override val required: Boolean,
     override val defaultValue: String,
     override val sortOrder: Int
-) : RoomAttributeInfo
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}

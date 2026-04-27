@@ -14,11 +14,15 @@ interface RoomAttributeDao {
      * 批量插入属性
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(roomAttributes: List<RoomAttribute>)
+    suspend fun insert(roomAttributes: List<RoomAttribute>)
 
     @Delete
-    fun delete(roomAttribute: RoomAttribute)
+    suspend fun delete(roomAttribute: RoomAttribute)
 
     @Query("SELECT * FROM room_attribute WHERE roomId = :roomId ORDER BY sortOrder ASC")
-    fun getAttributesByRoomId(roomId: Long): List<RoomAttribute>
+    suspend fun getAttributesByRoomId(roomId: Long): List<RoomAttribute>
+
+
+    @Query("DELETE FROM room_attribute WHERE roomId = :roomId")
+    suspend fun deleteByRoomId(roomId: Long)
 }

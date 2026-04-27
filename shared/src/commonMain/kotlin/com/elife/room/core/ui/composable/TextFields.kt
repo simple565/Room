@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.elife.room.shared.Res
@@ -36,17 +37,21 @@ import org.jetbrains.compose.resources.stringResource
 fun TextWithRequiredMark(
     text: String,
     modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontWeight: FontWeight? = null,
     style: TextStyle = MaterialTheme.typography.bodyMedium
 ) {
     Text(
         text = buildAnnotatedString {
             append(text)
-            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.errorContainer)) {
+            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.error)) {
                 append(stringResource(Res.string.required_mark))
             }
         },
         modifier = modifier,
-        style = style
+        style = style,
+        color = color,
+        fontWeight = fontWeight
     )
 }
 
@@ -69,10 +74,7 @@ fun InputTextField(
         unfocusedContainerColor = MaterialTheme.colorScheme.surface,
         errorContainerColor = MaterialTheme.colorScheme.surface
     ),
-    contentPadding: PaddingValues = TextFieldDefaults.contentPaddingWithoutLabel(
-        top = 0.dp,
-        bottom = 0.dp
-    )
+    contentPadding: PaddingValues = TextFieldDefaults.contentPaddingWithoutLabel(top = 0.dp, bottom = 0.dp)
 ) {
     TextField(
         state = state,

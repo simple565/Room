@@ -16,6 +16,9 @@ interface RoomDao {
     @Delete(entity = Room::class)
     suspend fun delete(room: Room)
 
+    @Query("DELETE FROM room WHERE id = :id")
+    suspend fun delete(id: Long)
+
     @Query("SELECT * FROM room")
     fun getRoomList(): Flow<List<Room>>
 

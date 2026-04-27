@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.elife.room.database.table.RecordAndAttribute
 import com.elife.room.database.table.RoomRecord
 import kotlinx.coroutines.flow.Flow
 
@@ -21,7 +22,7 @@ interface RecordDao {
     suspend fun insert(record: RoomRecord)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(records: List<RoomRecord>)
+    suspend fun insertAll(records: List<RoomRecord>): List<Long>
 
     @Update
     suspend fun update(record: RoomRecord)
@@ -43,4 +44,7 @@ interface RecordDao {
 
     @Query("SELECT * FROM record WHERE roomId = :roomId AND attributeId = :attributeId")
     fun getRecordsByAttribute(roomId: Int, attributeId: Int): Flow<List<RoomRecord>>
+
+    @Query("SELECT * FROM record WHERE roomId = :roomId AND recordId = :recordId")
+    fun getRecordAndAttributeList(roomId: Long, recordId: Long): List<RecordAndAttribute>
 }

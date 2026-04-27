@@ -69,7 +69,7 @@ class RoomDetailViewModel(
      */
     fun deleteRecord(recordId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            recordRepository.deleteRecord(recordId)
+            // recordRepository.deleteRecord(recordId)
         }
     }
 }

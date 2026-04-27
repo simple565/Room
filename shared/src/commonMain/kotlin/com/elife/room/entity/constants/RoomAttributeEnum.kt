@@ -1,4 +1,4 @@
-package com.elife.room.entity
+package com.elife.room.entity.constants
 
 /**
  * @author lianml

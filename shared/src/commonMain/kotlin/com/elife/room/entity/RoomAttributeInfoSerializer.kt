@@ -1,5 +1,6 @@
 package com.elife.room.entity
 
+import com.elife.room.entity.constants.RoomAttributeType
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException

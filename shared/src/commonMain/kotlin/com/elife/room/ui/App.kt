@@ -11,6 +11,8 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.elife.room.core.ui.theme.AppTheme
 import com.elife.room.feature.detail.RoomDetailPage
 import com.elife.room.feature.detail.RoomDetailRoute
+import com.elife.room.feature.record.RecordDetailPage
+import com.elife.room.feature.record.RecordDetailRoute
 import com.elife.room.feature.search.SearchPlugManagerRoute
 import com.elife.room.feature.search.SearchPluginManagerPage
 import kotlinx.serialization.modules.SerializersModule
@@ -21,6 +23,7 @@ private val config = SavedStateConfiguration {
         polymorphic(NavKey::class) {
             subclass(IndexRoute::class, IndexRoute.serializer())
             subclass(RoomDetailRoute::class, RoomDetailRoute.serializer())
+            subclass(RecordDetailRoute::class, RecordDetailRoute.serializer())
             subclass(SearchPlugManagerRoute::class, SearchPlugManagerRoute.serializer())
         }
     }
@@ -50,9 +53,19 @@ fun App() {
                     )
                 }
 
+                entry<RecordDetailRoute> {
+                    RecordDetailPage(
+                        roomId = it.roomId,
+                        recordId = it.recordId,
+                        onBackClick = { topLevelBackStack.removeLastOrNull()},
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
                 entry<SearchPlugManagerRoute> {
                     SearchPluginManagerPage(
-                        onBackClick = { topLevelBackStack.removeLastOrNull()},
+                        onBackClick = { topLevelBackStack.removeLastOrNull() },
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }

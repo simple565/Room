@@ -44,7 +44,7 @@ fun commonModule() = module {
     viewModel { HomeViewModel(repository = get()) }
     viewModel { EditRoomViewModel(repository = get()) }
     viewModel { RoomDetailViewModel(repository = get(), recordRepository = get()) }
-    viewModel { RecordEditViewModel(recordRepository = get()) }
+    viewModel { RecordEditViewModel(roomRepository = get(), recordRepository = get()) }
     viewModel { SearchPluginManagerViewModel(repository = get()) }
     viewModel { PluginSearchViewModel(repository = get()) }
 }

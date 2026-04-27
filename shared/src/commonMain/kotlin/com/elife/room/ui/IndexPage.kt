@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import com.elife.room.core.ui.composable.NavigationItem
 import com.elife.room.feature.home.HomePage
+import com.elife.room.feature.record.RecordDetailRoute
 import com.elife.room.feature.settings.SettingsPage
 import com.elife.room.shared.Res
 import com.elife.room.shared.nav_home
@@ -70,6 +71,7 @@ fun IndexPage(
         when (selectedItem) {
             0 -> HomePage(
                 onDetailClick = onDetailClick,
+                onRecordAddClick = { roomId, recordId -> onNavigateToTarget(RecordDetailRoute(roomId, recordId)) },
                 modifier = Modifier.fillMaxSize()
             )
 

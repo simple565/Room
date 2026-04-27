@@ -15,12 +15,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /**
  * @author lianml
  * @date 2025/11/6
  */
-class HomeViewModel(repository: RoomRepository) : ViewModel() {
+class HomeViewModel(private val repository: RoomRepository) : ViewModel() {
     private val _selectedTabIndex = MutableStateFlow(0)
     private val _roomListDisplayColumnCount = MutableStateFlow(0)
 
@@ -51,6 +52,12 @@ class HomeViewModel(repository: RoomRepository) : ViewModel() {
 
     fun selectGroupTab(index: Int) {
         _selectedTabIndex.value = index
+    }
+
+    fun deleteRoom(roomId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteRoom(roomId)
+        }
     }
 
 }

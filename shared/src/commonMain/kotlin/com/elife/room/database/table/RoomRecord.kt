@@ -1,7 +1,9 @@
 package com.elife.room.database.table
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 /**
  * @author Lian
@@ -15,4 +17,14 @@ data class RoomRecord(
     val attributeId: Long,
     val recordId: Long,
     val value: String
+)
+
+
+data class RecordAndAttribute(
+    @Embedded val record: RoomRecord,
+    @Relation(
+        parentColumn = "attributeId",
+        entityColumn = "id"
+    )
+    val attribute: RoomAttribute
 )
