@@ -28,13 +28,13 @@ data class SearchPluginInfo(
 @Serializable
 data class SearchParameter(
     val key: String,
-    val value: String = "",
-    val isDynamic: Boolean = false
+    val value: String = ""
 )
 
 
 @Serializable
 data class ResponseMapping(
+    val type: String,
     val name: String,
     val regex: String,
     val value: String

@@ -8,39 +8,42 @@
   "params": [
     {
       "key": "keyword",
-      "value": "",
-      "isDynamic": true
+      "value": "{keyword}"
     },
     {
       "key": "count",
-      "value": "20",
-      "isDynamic": false
+      "value": "{count}"
     }
   ],
   "body": [],
   "itemRegex": "\\\"bookInfo\\\":\\{([^}]*(?:\\{[^}]*\\}[^}]*)*)\\}",
   "mapping": [
     {
+      "type": "Image",
       "name": "封面",
       "regex": "\"cover\"\\s*:\\s*\"([^\"]*)\"",
       "value": ""
     },
     {
+      "type": "",
       "name": "id",
       "regex": "\"bookId\"\\s*:\\s*\"([^\"]*)\"",
       "value": ""
     },
     {
+      "type": "Text",
       "name": "名称",
       "regex": "\"title\"\\s*:\\s*\"([^\"]*)\"",
       "value": ""
     },
     {
+      "type": "MultiSelect",
       "name": "作者",
       "regex": "\"author\"\\s*:\\s*\"([^\"]*)\"",
       "value": ""
     },
     {
+      "type": "Text",
       "name": "简介",
       "regex": "\"intro\"\\s*:\\s*\"([^\"]*)\"",
       "value": ""

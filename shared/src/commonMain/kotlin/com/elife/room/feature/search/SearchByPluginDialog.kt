@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
@@ -35,13 +39,26 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.network.NetworkHeaders
+import coil3.network.httpHeaders
+import coil3.request.ImageRequest
 import com.elife.room.core.ext.isCompact
 import com.elife.room.core.ui.composable.AdaptiveDialog
 import com.elife.room.core.ui.composable.CommonDialogTitle
 import com.elife.room.core.ui.theme.spacing
+import com.elife.room.entity.ResponseMapping
 import com.elife.room.entity.SearchPluginInfo
+import com.elife.room.entity.constants.RoomAttributeType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -50,12 +67,13 @@ fun SearchByPluginDialog(
     onDismiss: () -> Unit,
     pluginList: List<SearchPluginInfo>,
     modifier: Modifier = Modifier,
-    onResultClick: ((Map<String, String>) -> Unit)? = null,
+    onResultClick: ((List<ResponseMapping>) -> Unit)? = null,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedPlugin by remember { mutableStateOf<SearchPluginInfo?>(null) }
-    var searchResults by remember { mutableStateOf(emptyList<Map<String, String>>()) }
+
+    var searchResults by remember { mutableStateOf(emptyList<List<ResponseMapping>>()) }
     var isSearching by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val searchService = remember { SearchService() }
@@ -229,35 +247,65 @@ fun SearchByPluginDialog(
     )
 }
 
+private fun Map<String, String>.toNetworkHeaders() : NetworkHeaders {
+    val builder = NetworkHeaders.Builder()
+    for ((key, value) in this) {
+        builder.add(key, value)
+    }
+    return builder.build()
+}
+
 @Composable
 private fun SearchResultItem(
-    result: Map<String, String>,
+    result: List<ResponseMapping>,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    headers: Map<String, String> = emptyMap()
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(MaterialTheme.spacing.small),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall)
+    Row(
+        modifier = modifier.clickable(onClick = onClick),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        result.entries.forEach { (key, value) ->
-            if (value.isNotBlank()) {
-                Text(
-                    text = value,
-                    style = if (key == result.keys.first()) {
-                        MaterialTheme.typography.bodyLarge
-                    } else {
-                        MaterialTheme.typography.bodySmall
-                    },
-                    color = if (key == result.keys.first()) {
-                        MaterialTheme.colorScheme.onSurface
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
-                    },
-                    maxLines = 2
-                )
+        if (result.none { it.type == RoomAttributeType.IMAGE.type }) {
+            Spacer(modifier = Modifier.size(48.dp))
+        } else {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalPlatformContext.current)
+                    .data(result.first { it.type == RoomAttributeType.IMAGE.type }.value.replace("\\", ""))
+                    .httpHeaders(headers.toNetworkHeaders())
+                    .build(),
+                modifier = Modifier.width(48.dp).aspectRatio(6F / 9F),
+                contentDescription = "Cover",
+                contentScale = ContentScale.Crop,
+            )
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.small),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall)
+        ) {
+            result.forEach {
+                if (it.type.isBlank()) {
+                    return@forEach
+                }
+                when (RoomAttributeType.typeOf(it.type)) {
+                    RoomAttributeType.TEXT -> {
+                        Text(
+                            text = buildAnnotatedString {
+                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                    append(it.name)
+                                    append("：")
+                                }
+                                append(it.value)
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    else -> {}
+                }
             }
         }
     }

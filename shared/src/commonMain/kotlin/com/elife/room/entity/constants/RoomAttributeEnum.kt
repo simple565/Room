@@ -17,7 +17,14 @@ enum class RoomAttributeType(val type: String) {
     RATING("Rating"),
     SWITCH("Switch"),
     TEXT("Text"),
-    LONG_TEXT("LongText"),
+    LONG_TEXT("LongText");
+
+    companion object {
+        fun typeOf(type: String): RoomAttributeType {
+            return entries.firstOrNull { it.type == type } ?: throw IllegalArgumentException("Invalid RoomAttributeType: $type")
+        }
+    }
+
 }
 
 enum class NumberFormat(val format: String) {

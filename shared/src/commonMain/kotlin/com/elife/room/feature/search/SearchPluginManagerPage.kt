@@ -66,6 +66,7 @@ object SearchPlugManagerRoute : NavKey
 @Composable
 fun SearchPluginManagerPage(
     onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: SearchPluginManagerViewModel = koinViewModel()
 ) {
     val dataLoadState by viewModel.pluginList.collectAsStateWithLifecycle()
@@ -73,6 +74,7 @@ fun SearchPluginManagerPage(
     val showVerifyPluginDialogState = remember { mutableStateOf<SearchPluginInfo?>(null) }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             RoomTopAppBar(
                 title = stringResource(Res.string.settings_item_search_plugin_manager),

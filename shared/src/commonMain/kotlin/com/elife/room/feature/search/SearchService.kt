@@ -1,13 +1,18 @@
 package com.elife.room.feature.search
 
+import com.elife.room.entity.ResponseMapping
+import com.elife.room.entity.SearchParameter
 import com.elife.room.entity.SearchPluginInfo
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.request
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -36,28 +41,47 @@ class SearchService {
         }
     }
 
-    suspend fun search(plugin: SearchPluginInfo, query: String, page: Int = 1): List<Map<String, String>> {
+    suspend fun search(plugin: SearchPluginInfo, query: String, page: Int = 1, pageCount: Int = 10): List<List<ResponseMapping>> {
         if (plugin.itemRegex.isBlank()) {
             print("item regex is blank")
             return emptyList()
         }
+        val offset = (page - 1) * pageCount
+        val replacements = mapOf(
+            "{keyword}" to query,
+            "{page}" to page.toString(),
+            "{count}" to pageCount.toString(),
+            "{offset}" to offset.toString()
+        )
         return try {
             val response = client.request(plugin.url) {
                 method = HttpMethod(plugin.method.uppercase())
+                plugin.headers.forEach {
+                    headers.append(it.key, it.value)
+                }
                 url {
                     plugin.params.forEach {
-                        parameters.append(it.key, it.value.ifBlank { query } )
+                        parameters.append(it.key, computeValue(it, replacements, it.value))
                     }
                 }
+                if (plugin.body.isNotEmpty()) {
+                    contentType(ContentType.Application.Json)
+                    val bodyMap = plugin.body.associate {
+                        it.key to computeValue(it, replacements, it.value)
+                    }
+                    println(bodyMap)
+                    setBody(bodyMap)
+                }
             }
-            println(response.bodyAsText())
             val itemMatches = Regex(plugin.itemRegex).findAll(response.bodyAsText())
             return itemMatches.map { match ->
-                val content = match.groupValues[1]
-                return@map plugin.mapping.associate {
-                    it.name to extractField(content, it.regex)
-                }
-            }.toList().also { println(it) }
+                // 如果有捕获组则使用捕获组，否则使用整个匹配
+                val content = if (match.groupValues.size > 1) match.groupValues[1] else match.value
+                println("item: $content")
+                return@map plugin.mapping.map {
+                    it.copy(value = extractField(content, it.regex))
+                }.toList()
+            }.toList()
         } catch (e: Exception) {
             println("error:" + e.message)
             emptyList()
@@ -70,8 +94,15 @@ class SearchService {
     private fun extractField(jsonContent: String, regex: String): String {
         val regex = Regex(regex)
         val match = regex.find(jsonContent) ?: return ""
-        println(match.groupValues)
         return match.groupValues.getOrNull(1) ?: ""
+    }
+
+    private fun computeValue(param: SearchParameter, replacements: Map<String, String>, default: String = ""): String {
+        val replaced = param.value.replace(Regex("\\{(\\w+)\\}")) { match ->
+            replacements[match.groupValues.first()] ?: match.value
+        }
+
+        return replaced.ifBlank { default }
     }
 
     fun close() {

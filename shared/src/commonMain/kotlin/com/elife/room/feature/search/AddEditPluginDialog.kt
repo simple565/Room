@@ -20,6 +20,11 @@ import com.elife.room.core.ext.isCompact
 import com.elife.room.core.ui.composable.AdaptiveDialog
 import com.elife.room.core.ui.composable.CommonDialogTitle
 import com.elife.room.entity.SearchPluginInfo
+import com.elife.room.shared.Res
+import com.elife.room.shared.add
+import com.elife.room.shared.edit
+import com.elife.room.shared.search_plugin_action_format
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +48,7 @@ fun AddEditPluginDialog(
                 )
             )  {
                 CommonDialogTitle(
-                    title = if (plugin == null) "添加搜索插件" else "编辑搜索插件",
+                    title = stringResource(Res.string.search_plugin_action_format, stringResource(if (plugin == null) Res.string.add else Res.string.edit)),
                     onCancelClick = onDismiss,
                     onConfirmClick = {
                         val newPlugin = SearchPluginInfo(

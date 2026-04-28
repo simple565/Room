@@ -59,11 +59,13 @@
     <string name="record_statistics">统计</string>
 
     <string name="settings_group_funtion">功能</string>
+    <string name="settings_plugin">插件</string>
     <string name="settings_item_search_plugin_manager">搜索插件管理</string>
     <string name="settings_item_search_plugin_manager_description">管理图书、电影等搜索插件</string>
+
     <string name="search_plugin_empty">暂无搜索插件</string>
     <string name="search_plugin_load_preset">加载预置插件</string>
     <string name="search_plugin_preset_loading">加载预置插件中，请稍候……</string>
-    <string name="search_plugin_check">检测</string>
+    <string name="search_plugin_action_format">%1$s搜索插件</string>
 
 </resources>
