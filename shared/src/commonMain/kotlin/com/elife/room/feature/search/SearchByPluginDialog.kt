@@ -29,7 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,7 +68,7 @@ fun SearchByPluginDialog(
     pluginList: List<SearchPluginInfo>,
     modifier: Modifier = Modifier,
     onResultClick: ((List<ResponseMapping>) -> Unit)? = null,
-    windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
+    windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2()
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedPlugin by remember { mutableStateOf<SearchPluginInfo?>(null) }

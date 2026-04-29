@@ -8,7 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +33,7 @@ fun AddEditPluginDialog(
     onSave: (SearchPluginInfo) -> Unit,
     modifier: Modifier = Modifier,
     plugin: SearchPluginInfo? = null,
-    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2()
 ) {
     var name by remember { mutableStateOf(plugin?.name ?: "") }
     var baseUrl by remember { mutableStateOf(plugin?.url ?: "") }

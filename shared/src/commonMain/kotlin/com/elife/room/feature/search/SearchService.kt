@@ -1,5 +1,6 @@
 package com.elife.room.feature.search
 
+import com.elife.room.core.Logger
 import com.elife.room.entity.ResponseMapping
 import com.elife.room.entity.SearchParameter
 import com.elife.room.entity.SearchPluginInfo
@@ -18,6 +19,7 @@ import kotlinx.serialization.json.Json
 
 class SearchService {
     companion object {
+        private const val TAG = "SearchService"
         val userAgentHeader = mapOf(
             "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
         )
@@ -43,7 +45,7 @@ class SearchService {
 
     suspend fun search(plugin: SearchPluginInfo, query: String, page: Int = 1, pageCount: Int = 10): List<List<ResponseMapping>> {
         if (plugin.itemRegex.isBlank()) {
-            print("item regex is blank")
+            Logger.e(TAG,"search: item regex is blank")
             return emptyList()
         }
         val offset = (page - 1) * pageCount
@@ -69,21 +71,19 @@ class SearchService {
                     val bodyMap = plugin.body.associate {
                         it.key to computeValue(it, replacements, it.value)
                     }
-                    println(bodyMap)
                     setBody(bodyMap)
                 }
             }
             val itemMatches = Regex(plugin.itemRegex).findAll(response.bodyAsText())
             return itemMatches.map { match ->
-                // 如果有捕获组则使用捕获组，否则使用整个匹配
                 val content = if (match.groupValues.size > 1) match.groupValues[1] else match.value
-                println("item: $content")
+                Logger.d(TAG, "search: item: $content")
                 return@map plugin.mapping.map {
                     it.copy(value = extractField(content, it.regex))
                 }.toList()
             }.toList()
         } catch (e: Exception) {
-            println("error:" + e.message)
+            Logger.e(TAG, "search: ", e)
             emptyList()
         }
     }
@@ -106,6 +106,7 @@ class SearchService {
     }
 
     fun close() {
+        Logger.d(TAG, "close: ")
         client.close()
     }
 }

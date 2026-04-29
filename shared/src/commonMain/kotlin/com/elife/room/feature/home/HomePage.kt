@@ -23,7 +23,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,7 +55,7 @@ fun HomePage(
     onDetailClick: (Long) -> Unit,
     onRecordAddClick: (Long, Long) -> Unit,
     modifier: Modifier = Modifier,
-    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2(),
     viewModel: HomeViewModel = koinViewModel()
 ) {
     val roomGroupTabState by viewModel.groupTabsState.collectAsStateWithLifecycle()

@@ -29,7 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
@@ -72,7 +72,7 @@ fun EditRoomConfigDialog(
     roomId: Long,
     onDismissRequest: (RoomInfo?) -> Unit,
     modifier: Modifier = Modifier,
-    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2(),
     viewModel: EditRoomViewModel = koinViewModel()
 ) {
     LaunchedEffect(roomId) {
@@ -98,7 +98,7 @@ fun EditRoomConfigDialog(
     templateFileName: String,
     onDismissRequest: (RoomInfo?) -> Unit,
     modifier: Modifier = Modifier,
-    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2(),
     viewModel: EditRoomViewModel = koinViewModel()
 ) {
     LaunchedEffect(templateFileName) {
@@ -126,7 +126,7 @@ fun EditRoomConfigDialog(
     onDismissRequest: () -> Unit,
     onConfirmClick: (RoomInfo) -> Unit,
     modifier: Modifier = Modifier,
-    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2()
 ) {
     val attributesState = remember { mutableStateOf(roomInfo.attributeInfoList) }
     val showAddAttrDialog = remember { mutableStateOf(false)}
@@ -148,7 +148,7 @@ fun EditRoomConfigDialog(
             Column(
                 modifier = modifier.then(
                     Modifier.fillMaxWidth(if (windowInfo.isCompact()) 1F else 0.7F)
-                        .fillMaxHeight(if (windowInfo.isCompact()) 0.85F else 0.55F)
+                        .fillMaxHeight(0.85F)
                 ),
             ) {
                 CommonDialogTitle(
@@ -222,7 +222,6 @@ fun EditRoomConfigDialog(
             onDismissRequest = { showAddAttrDialog.value = false },
             onConfirmClick = {
             },
-            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
             windowInfo = windowInfo
         )
     }

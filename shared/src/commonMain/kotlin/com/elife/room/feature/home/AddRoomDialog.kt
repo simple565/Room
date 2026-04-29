@@ -14,7 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +45,7 @@ import org.jetbrains.compose.resources.stringResource
 fun AddRoomDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
+    windowInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2()
 ) {
     val templates = remember { mutableStateOf<List<RoomTemplate>>(emptyList()) }
     val showEditRoomDialogState = remember { mutableStateOf<String?>(null)}
@@ -64,7 +64,7 @@ fun AddRoomDialog(
             Column(
                 modifier = modifier.then(
                     Modifier.fillMaxWidth(if (windowInfo.isCompact()) 1F else 0.7F)
-                        .fillMaxHeight(if (windowInfo.isCompact()) 0.75F else 0.55F)
+                        .fillMaxHeight(0.75F)
                 )
             ) {
                 CommonDialogTitle(

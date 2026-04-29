@@ -40,7 +40,7 @@ fun AddAttributeDialog(
             Column(
                 modifier = modifier.then(
                     Modifier.fillMaxWidth(if (windowInfo.isCompact()) 1F else 0.5F)
-                        .fillMaxHeight(if (windowInfo.isCompact()) 0.7F else 0.4F)
+                        .fillMaxHeight(0.7F)
                 ),
             ) {
                 CommonDialogTitle(
