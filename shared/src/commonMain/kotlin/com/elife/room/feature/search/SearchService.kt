@@ -20,9 +20,6 @@ import kotlinx.serialization.json.Json
 class SearchService {
     companion object {
         private const val TAG = "SearchService"
-        val userAgentHeader = mapOf(
-            "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
-        )
     }
 
     private val client = HttpClient {
@@ -43,7 +40,7 @@ class SearchService {
         }
     }
 
-    suspend fun search(plugin: SearchPluginInfo, query: String, page: Int = 1, pageCount: Int = 10): List<List<ResponseMapping>> {
+    suspend fun search(plugin: SearchPluginInfo, query: String, page: Int = 1, pageCount: Int = 20): List<List<ResponseMapping>> {
         if (plugin.itemRegex.isBlank()) {
             Logger.e(TAG,"search: item regex is blank")
             return emptyList()
@@ -58,6 +55,7 @@ class SearchService {
         return try {
             val response = client.request(plugin.url) {
                 method = HttpMethod(plugin.method.uppercase())
+                Logger.d(TAG, "search: header: ${plugin.headers}")
                 plugin.headers.forEach {
                     headers.append(it.key, it.value)
                 }

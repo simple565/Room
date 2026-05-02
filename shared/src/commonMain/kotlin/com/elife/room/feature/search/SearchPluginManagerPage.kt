@@ -227,7 +227,8 @@ private fun SearchPluginCard(
                 content = {
                     Icon(
                         imageVector = Icons.Filled.MoreVert,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             )
@@ -257,6 +258,7 @@ private fun PlugMoreActionPop(
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         modifier = modifier
     ) {
+        PluginMoreActionMenu(text = Res.string.edit, onClick = onActionClick)
         PluginMoreActionMenu(text = Res.string.verify, onClick = onActionClick)
         PluginMoreActionMenu(text = Res.string.delete, onClick = onActionClick)
     }
@@ -266,9 +268,14 @@ private fun PlugMoreActionPop(
 private fun PluginMoreActionMenu(text: StringResource, onClick: (StringResource) -> Unit) {
     DropdownMenuItem(
         text = {
-            Text(text = stringResource(text))
+            Text(
+                text = stringResource(text),
+                style = MaterialTheme.typography.bodyMedium
+            )
         },
-        onClick = { onClick(text) }
+        onClick = { onClick(text) },
+        modifier = Modifier.clip(MaterialTheme.shapes.medium),
+        contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.small)
     )
 }
 

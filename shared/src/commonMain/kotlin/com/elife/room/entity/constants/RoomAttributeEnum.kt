@@ -11,6 +11,7 @@ enum class RoomAttributeType(val type: String) {
     DATETIME("Datetime"),
     DURATION("Duration"),
     IMAGE("Image"),
+    LABEl_GROUP("LabelGroup"),
     NUMBER("Number"),
     SELECT("Select"),
     MULTI_SELECT("MultiSelect"),

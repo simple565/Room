@@ -56,6 +56,23 @@ data class ImageRoomAttributeInfo(
     }
 }
 
+
+@Serializable
+data class LabelGroupRoomAttributeInfo(
+    override val type: String = RoomAttributeType.LABEl_GROUP.type,
+    override val id: Long = Long.defaultId,
+    override val name: String,
+    override val description: String,
+    override val required: Boolean,
+    override val defaultValue: String,
+    override val sortOrder: Int,
+    val labels: List<String> = emptyList()
+) : RoomAttributeInfo {
+    override fun withIdAndSortOrder(id: Long, sortOrder: Int): RoomAttributeInfo {
+        return copy(id = id, sortOrder = sortOrder)
+    }
+}
+
 @Serializable
 data class NumberRoomAttributeInfo(
     override val type: String = RoomAttributeType.NUMBER.type,

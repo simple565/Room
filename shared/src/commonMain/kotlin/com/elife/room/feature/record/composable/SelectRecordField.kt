@@ -1,13 +1,10 @@
 package com.elife.room.feature.record.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,9 +12,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.elife.room.core.ui.composable.DropdownSelector
 import com.elife.room.core.ui.theme.AppTheme
 import com.elife.room.core.ui.tooling.UiModePreview
 import com.elife.room.entity.SelectRoomAttributeInfo
+import com.elife.room.shared.Res
+import com.elife.room.shared.prompt_select_format
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * 单选类型记录字段
@@ -49,38 +50,14 @@ fun SelectRecordField(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { if (enabled) expanded = it },
+        DropdownSelector(
+            label = stringResource(Res.string.prompt_select_format, attribute.name),
+            isRequired = attribute.required,
+            selected = value,
+            options = options,
+            onSelected = onValueChange,
             modifier = Modifier.fillMaxWidth()
-        ) {
-            OutlinedTextField(
-                value = value,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text("请选择") },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(),
-                enabled = enabled
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = {
-                            onValueChange(option)
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
+        )
     }
 }
 
@@ -88,17 +65,19 @@ fun SelectRecordField(
 @Composable
 private fun SelectRecordFieldPreview() {
     AppTheme {
-        SelectRecordField(
-            attribute = SelectRoomAttributeInfo(
-                name = "Sample Select",
-                description = "A sample select field",
-                required = false,
-                defaultValue = "",
-                options = listOf("Option 1", "Option 2", "Option 3"),
-                sortOrder = 0
-            ),
-            value = "",
-            onValueChange = {}
-        )
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+            SelectRecordField(
+                attribute = SelectRoomAttributeInfo(
+                    name = "Sample",
+                    description = "A sample select field",
+                    required = false,
+                    defaultValue = "Option 1",
+                    options = listOf("Option 1", "Option 2", "Option 3"),
+                    sortOrder = 0
+                ),
+                value = "",
+                onValueChange = {}
+            )
+        }
     }
 }

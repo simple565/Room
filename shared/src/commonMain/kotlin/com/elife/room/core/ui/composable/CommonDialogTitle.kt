@@ -100,7 +100,11 @@ fun CommonDialogTitle(
 @Composable
 private fun TitlePreview() {
     AppTheme {
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+        Column(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .padding(MaterialTheme.spacing.small),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+        ) {
             CommonDialogTitle(
                 title = "Test",
                 onCancelClick = {},

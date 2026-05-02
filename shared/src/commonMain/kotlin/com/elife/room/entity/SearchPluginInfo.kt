@@ -12,13 +12,13 @@ import kotlinx.serialization.Transient
 @Serializable
 data class SearchPluginInfo(
     val id: Long = Long.defaultId,
-    val name: String,
+    val name: String = "",
     val description: String = "",
     val method: String = HttpMethod.Get.value,
-    val url: String,
+    val url: String = "",
     val headers: Map<String, String> = emptyMap(),
-    val params: List<SearchParameter> = emptyList(),
     val body: List<SearchParameter> = emptyList(),
+    val params: List<SearchParameter> = emptyList(),
     val itemRegex: String = "",
     val mapping: List<ResponseMapping> = emptyList(),
     @Transient

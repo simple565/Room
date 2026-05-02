@@ -19,7 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -59,7 +59,10 @@ import com.elife.room.core.ui.theme.spacing
 import com.elife.room.entity.ResponseMapping
 import com.elife.room.entity.SearchPluginInfo
 import com.elife.room.entity.constants.RoomAttributeType
+import com.elife.room.shared.Res
+import com.elife.room.shared.search
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -91,7 +94,7 @@ fun SearchByPluginDialog(
                 modifier = modifier.then(
                     Modifier
                         .fillMaxWidth(if (windowAdaptiveInfo.isCompact()) 1F else 0.7F)
-                        .fillMaxHeight(if (windowAdaptiveInfo.isCompact()) 0.9F else 0.7F)
+                        .fillMaxHeight(0.9F)
                 )
             ) {
                 CommonDialogTitle(
@@ -117,8 +120,8 @@ fun SearchByPluginDialog(
                             },
                             content = {
                                 Icon(
-                                    Icons.Default.Search,
-                                    contentDescription = "搜索"
+                                    Icons.Rounded.Search,
+                                    contentDescription = stringResource(Res.string.search)
                                 )
                             }
                         )
@@ -141,17 +144,6 @@ fun SearchByPluginDialog(
                         .fillMaxWidth()
                         .padding(horizontal = MaterialTheme.spacing.medium)
                         .padding(top = MaterialTheme.spacing.small)
-                )
-
-                Text(
-                    text = "选择插件",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.spacing.medium,
-                        top = MaterialTheme.spacing.medium,
-                        end = MaterialTheme.spacing.medium
-                    )
                 )
 
                 if (pluginList.isEmpty()) {
@@ -183,18 +175,6 @@ fun SearchByPluginDialog(
                         }
                     }
                 }
-
-                Text(
-                    text = "搜索结果",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.spacing.medium,
-                        top = MaterialTheme.spacing.medium,
-                        end = MaterialTheme.spacing.medium,
-                        bottom = MaterialTheme.spacing.small
-                    )
-                )
 
                 if (isSearching) {
                     Column(
@@ -237,6 +217,7 @@ fun SearchByPluginDialog(
                         items(items = searchResults, key = { it.hashCode() }) {
                             SearchResultItem(
                                 result = it,
+                                headers = selectedPlugin?.headers ?: emptyMap(),
                                 onClick = { onResultClick?.invoke(it) }
                             )
                         }
@@ -272,8 +253,10 @@ private fun SearchResultItem(
         } else {
             AsyncImage(
                 model = ImageRequest.Builder(LocalPlatformContext.current)
-                    .data(result.first { it.type == RoomAttributeType.IMAGE.type }.value.replace("\\", ""))
                     .httpHeaders(headers.toNetworkHeaders())
+                    .memoryCacheKey(result.first { it.type == RoomAttributeType.IMAGE.type }.value)
+                    .diskCacheKey(result.first { it.type == RoomAttributeType.IMAGE.type }.value)
+                    .data(result.first { it.type == RoomAttributeType.IMAGE.type }.value.replace("\\", ""))
                     .build(),
                 modifier = Modifier.width(48.dp).aspectRatio(6F / 9F),
                 contentDescription = "Cover",

@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.NavigateNext
-import androidx.compose.material.icons.rounded.SettingsApplications
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Shape
 import androidx.navigation3.runtime.NavKey
 import com.elife.room.core.ui.composable.RoomTopAppBar
 import com.elife.room.core.ui.theme.AppTheme
@@ -66,7 +69,6 @@ fun SettingsPage(
         ) {
             item {
                 RouteSettingCard(
-                    icon = Icons.Rounded.SettingsApplications,
                     title = stringResource(Res.string.settings_item_search_plugin_manager),
                     description = stringResource(Res.string.settings_item_search_plugin_manager_description),
                     onClick = { onNavigateToTarget(SearchPlugManagerRoute) },
@@ -79,39 +81,45 @@ fun SettingsPage(
 
 @Composable
 private fun RouteSettingCard(
-    icon: ImageVector,
     title: String,
     description: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    shape: Shape = CardDefaults.shape,
+    colors: CardColors = CardDefaults.cardColors(),
+    elevation: CardElevation = CardDefaults.cardElevation(),
 ) {
-    Row(
-        modifier = modifier.clickable { onClick() }
-            .then(Modifier.padding(MaterialTheme.spacing.medium)),
-        verticalAlignment = Alignment.CenterVertically
+    Card(
+        modifier = modifier.clickable { onClick() },
+        shape = shape,
+        colors = colors,
+        elevation = elevation
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = title,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Column(modifier = Modifier.padding(start = MaterialTheme.spacing.small)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+        Row(
+            modifier = Modifier.padding(MaterialTheme.spacing.medium),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Spacer(modifier = Modifier.weight(1F))
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.NavigateNext,
+                contentDescription = title
             )
         }
-        Spacer(modifier = Modifier.weight(1F))
-        Icon(
-            imageVector = Icons.AutoMirrored.Rounded.NavigateNext,
-            contentDescription = title
-        )
     }
 }
 
@@ -119,19 +127,21 @@ private fun RouteSettingCard(
 @Composable
 private fun RouteSettingCardPreview() {
     AppTheme {
-        LazyColumn(
-            modifier = Modifier.background(color = MaterialTheme.colorScheme.surface).padding(MaterialTheme.spacing.medium)
-        ) {
+        LazyColumn {
             item {
                 RouteSettingCard(
-                    icon = Icons.Rounded.SettingsApplications,
                     title = stringResource(Res.string.settings_item_search_plugin_manager),
                     description = stringResource(Res.string.settings_item_search_plugin_manager_description),
                     onClick = {},
-                    modifier = Modifier.fillMaxWidth().background(
-                        color = MaterialTheme.colorScheme.surfaceContainerLow,
-                        shape = MaterialTheme.shapes.medium
-                    )
+                    modifier = Modifier.padding(MaterialTheme.spacing.small).fillMaxWidth()
+                )
+            }
+            item {
+                RouteSettingCard(
+                    title = stringResource(Res.string.settings_item_search_plugin_manager),
+                    description = stringResource(Res.string.settings_item_search_plugin_manager_description),
+                    onClick = {},
+                    modifier = Modifier.padding(MaterialTheme.spacing.small).fillMaxWidth()
                 )
             }
         }
